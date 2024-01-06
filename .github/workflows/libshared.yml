@@ -21,20 +21,20 @@ jobs:
       id: strings
       shell: bash
       run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        echo "build-output-dir=${{ github.workspace }}/build/libshared" >> "$GITHUB_OUTPUT"
         VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
         [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-        [ "$VERSION" == "core4" ] && VERSION=latest
+        [ "$VERSION" == "main" ] && VERSION=latest
         echo VERSION=$VERSION
         echo "build-version=${VERSION}" >> "$GITHUB_OUTPUT"
 
     - name: Configure CMake
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -S ${{ github.workspace }}
+        -S ${{ github.workspace }}/libshared
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target libshared
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug
 
     - name: Package
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target package
@@ -42,4 +42,4 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: monorepo-libshared-${{ steps.strings.outputs.build-version }}
-        path: ${{ steps.strings.outputs.build-output-dir }}/libshared
+        path: ${{ steps.strings.outputs.build-output-dir }}/*

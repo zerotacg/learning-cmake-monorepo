@@ -1,4 +1,4 @@
-project(monorepo_libshared LANGUAGES CXX)
+project(monorepo_libshared VERSION 1.0.0 LANGUAGES CXX)
 
 file(GLOB SRC libshared/*.cpp)
 
