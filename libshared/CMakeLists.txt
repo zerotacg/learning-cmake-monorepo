@@ -10,12 +10,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB SRC libshared/*.cpp)
 
-add_library(shared ${SRC})
-add_library(monorepo::shared ALIAS shared)
+add_library(monorepo-shared ${SRC})
+add_library(monorepo::shared ALIAS monorepo-shared)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-target_include_directories(shared
+target_include_directories(monorepo-shared
         INTERFACE
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
@@ -40,7 +40,7 @@ configure_package_config_file(
         INSTALL_DESTINATION "${config_install_dir}"
 )
 
-install(TARGETS shared
+install(TARGETS monorepo-shared
         EXPORT "${TARGETS_EXPORT_NAME}"
 )
 
