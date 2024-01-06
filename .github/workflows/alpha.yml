@@ -4,8 +4,9 @@ on:
   push:
     branches: [ "main", "feature/*" ]
     paths:
-      - "alpha"
       - ".github/workflows/alpha.yml"
+      - "alpha"
+      - "CMakeLists.txt"
   pull_request:
     branches: [ "main" ]
 
