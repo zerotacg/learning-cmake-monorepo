@@ -17,7 +17,7 @@ jobs:
       id: strings
       shell: bash
       run: |
-        echo "build-output-dir=${{ github.workspace }}/build/libshared" >> "$GITHUB_OUTPUT"
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
         VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
         [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
         [ "$VERSION" == "main" ] && VERSION=latest
@@ -51,11 +51,18 @@ jobs:
         id: strings
         shell: bash
         run: |
-          echo "build-output-dir=${{ github.workspace }}/build/alpha" >> "$GITHUB_OUTPUT"
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
       - uses: actions/download-artifact@v4
         with:
           path: ${{ steps.strings.outputs.build-output-dir }}
+
+      - name: Unpack Artifact
+        shell: bash
+        run: |
+          mkdir --parents ${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared
+          cd ${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared
+          tar --verbose --extract --file=${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared-*.tar.gz
 
       - name: Configure CMake
         run: >
