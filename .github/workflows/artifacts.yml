@@ -1,17 +1,13 @@
-name: Build libshared
+name: Build Artifacts
 
 on:
   push:
     branches: [ "main", "feature/*" ]
-    paths:
-      - ".github/workflows/libshared.yml"
-      - "libshared/**"
-      - "CMakeLists.txt"
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  build:
+  libshared:
     runs-on: ubuntu-latest
 
     steps:
@@ -42,4 +38,29 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: monorepo-libshared-${{ steps.strings.outputs.build-version }}
-        path: ${{ steps.strings.outputs.build-output-dir }}/*
+        path: ${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared-*.tar.gz
+
+  alpha:
+    runs-on: ubuntu-latest
+    needs: [libshared]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set reusable strings
+        id: strings
+        shell: bash
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/build/alpha" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: ${{ steps.strings.outputs.build-output-dir }}
+
+      - name: Configure CMake
+        run: >
+          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -S ${{ github.workspace }}/alpha
+
+      - name: Build
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug
