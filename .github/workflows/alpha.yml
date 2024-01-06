@@ -9,6 +9,10 @@ on:
       - "CMakeLists.txt"
   pull_request:
     branches: [ "main" ]
+  workflow_run:
+    workflows: [Build libshared]
+    types:
+      - completed
 
 jobs:
   build:
