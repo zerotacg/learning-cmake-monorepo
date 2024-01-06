@@ -8,3 +8,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(libshared)
 add_subdirectory(alpha)
 add_subdirectory(beta)
+
+include(CPack)
