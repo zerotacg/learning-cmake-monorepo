@@ -68,12 +68,12 @@ jobs:
       - name: Unpack Artifact
         shell: bash
         run: |
-          ${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared-*.sh --skip-license --prefix=$(realpath ~/.local)
+          ${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared-*.sh --skip-license --prefix=$(realpath ${{ steps.strings.outputs.build-output-dir }}/libshared)
 
       - name: Configure CMake
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
-          -DCMAKE_PREFIX_PATH="~/.local"
+          -DCMAKE_PREFIX_PATH="${{ steps.strings.outputs.build-output-dir }}/libshared"
           -S ${{ github.workspace }}/alpha
 
       - name: Build
