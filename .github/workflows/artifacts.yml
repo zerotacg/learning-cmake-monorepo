@@ -27,6 +27,7 @@ jobs:
     - name: Configure CMake
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_BUILD_TYPE=Debug
         -DCPACK_PACKAGE_VERSION="${{ steps.strings.outputs.build-version }}"
         -S ${{ github.workspace }}/libshared
 
@@ -39,7 +40,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: monorepo-libshared
-        path: ${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared-*.tar.gz
+        path: ${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared-*
 
   alpha:
     runs-on: ubuntu-latest
