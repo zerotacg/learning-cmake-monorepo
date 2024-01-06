@@ -5,6 +5,7 @@ on:
     branches: [ "main", "feature/*" ]
     paths:
       - "alpha"
+      - ".github/workflows/alpha.yml"
   pull_request:
     branches: [ "main" ]
 
