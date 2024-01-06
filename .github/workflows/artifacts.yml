@@ -67,8 +67,8 @@ jobs:
       - name: Unpack Artifact
         shell: bash
         run: |
-          find ${{ steps.strings.outputs.build-output-dir }}
-          tar --verbose --extract --file=${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared-${{ steps.strings.outputs.build-version }}.tar.gz
+          mv ${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared-*.tar.gz ${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared.tar.gz
+          tar --verbose --extract --file=${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared.tar.gz
           find ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Configure CMake
