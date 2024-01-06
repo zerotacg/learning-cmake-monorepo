@@ -67,6 +67,7 @@ jobs:
       - name: Unpack Artifact
         shell: bash
         run: |
+          find ${{ steps.strings.outputs.build-output-dir }}
           tar --verbose --extract --file=${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared-${{ steps.strings.outputs.build-version }}.tar.gz
           find ${{ steps.strings.outputs.build-output-dir }}
 
