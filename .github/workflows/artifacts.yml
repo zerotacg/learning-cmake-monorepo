@@ -61,6 +61,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
+          name: monorepo-libshared
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Unpack Artifact
