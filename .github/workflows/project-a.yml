@@ -40,9 +40,16 @@ jobs:
         name: build-configure
         path: ${{ steps.strings.outputs.build-output-dir }}
 
-  shared:
+  libraries:
     runs-on: ubuntu-latest
     needs: [configure]
+    strategy:
+      fail-fast: true
+
+      matrix:
+        target:
+          - shared
+          - special
 
     steps:
     - uses: actions/checkout@v4
@@ -59,43 +66,22 @@ jobs:
         path: ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target shared
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ env.build_type }} --target ${{ matrix.target }}
 
     - uses: actions/upload-artifact@v4
       with:
-        name: build-shared
+        name: build-${{ matrix.target }}
         path: ${{ steps.strings.outputs.build-output-dir }}
 
-  special:
+  applications:
     runs-on: ubuntu-latest
-    needs: [configure]
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Set reusable strings
-      id: strings
-      shell: bash
-      run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-
-    - uses: actions/download-artifact@v4
-      with:
-        name: build-configure
-        path: ${{ steps.strings.outputs.build-output-dir }}
-
-    - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target special
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: build-special
-        path: ${{ steps.strings.outputs.build-output-dir }}
-
-  alpha:
-    runs-on: ubuntu-latest
-    needs: [shared, special]
-
+    needs: [libraries]
+    strategy:
+      fail-fast: true
+      matrix:
+        target:
+          - alpha
+          - beta
     steps:
       - uses: actions/checkout@v4
 
@@ -116,42 +102,16 @@ jobs:
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target alpha
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target ${{ matrix.target }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build-alpha
-          path: ${{ steps.strings.outputs.build-output-dir }}
-
-  beta:
-    runs-on: ubuntu-latest
-    needs: [shared]
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set reusable strings
-        id: strings
-        shell: bash
-        run: |
-          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-shared
-          path: ${{ steps.strings.outputs.build-output-dir }}
-
-      - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target beta
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-beta
+          name: build-${{ matrix.target }}
           path: ${{ steps.strings.outputs.build-output-dir }}
 
   package:
     runs-on: ubuntu-latest
-    needs: [shared, alpha, beta]
+    needs: [libraries, applications]
 
     steps:
       - uses: actions/checkout@v4
