@@ -93,12 +93,6 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: build-shared
-          path: ${{ steps.strings.outputs.build-output-dir }}
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-special
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Build
