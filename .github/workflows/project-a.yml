@@ -65,6 +65,7 @@ jobs:
       matrix:
         target:
           - shared
+          - special
     steps:
       - name: Dependencies
         run: >
@@ -97,6 +98,7 @@ jobs:
       matrix:
         target:
           - alpha
+          - beta
     steps:
       - name: Dependencies
         run: >
