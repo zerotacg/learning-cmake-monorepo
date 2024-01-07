@@ -125,7 +125,7 @@ jobs:
 
   package:
     runs-on: ubuntu-latest
-    needs: [ libraries, applications ]
+    needs: [ configure, libraries, applications ]
 
     steps:
       - uses: actions/checkout@v4
