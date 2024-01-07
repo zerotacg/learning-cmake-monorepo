@@ -39,8 +39,8 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: monorepo-libshared
-        path: ${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared-*
+        name: monorepo-shared
+        path: ${{ steps.strings.outputs.build-output-dir }}/monorepo-shared-*
 
   alpha:
     runs-on: ubuntu-latest
@@ -62,13 +62,13 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: monorepo-libshared
+          name: monorepo-shared
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Unpack Artifact
         shell: bash
         run: |
-          sh ${{ steps.strings.outputs.build-output-dir }}/monorepo-libshared-*.sh --skip-license --prefix=$(realpath ~/.local)
+          sh ${{ steps.strings.outputs.build-output-dir }}/monorepo-shared-*.sh --skip-license --prefix=$(realpath ~/.local)
 
       - name: Configure CMake
         run: >
