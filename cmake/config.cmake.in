@@ -1,0 +1,11 @@
+@PACKAGE_INIT@
+
+set(_monorepo_supported_components @package_components@)
+
+foreach(_comp ${monorepo_FIND_COMPONENTS})
+  if (NOT _comp IN_LIST _monorepo_supported_components)
+    set(monorepo_FOUND False)
+    set(monorepo_NOT_FOUND_MESSAGE "Unsupported component: ${_comp}")
+  endif()
+  include("${CMAKE_CURRENT_LIST_DIR}/monorepo-${_comp}-targets.cmake")
+endforeach()

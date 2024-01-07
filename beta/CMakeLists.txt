@@ -1,5 +1,3 @@
-project(monorepo_beta LANGUAGES CXX)
-
 file(GLOB SRC beta/*.cpp)
 
 add_executable(beta ${SRC})

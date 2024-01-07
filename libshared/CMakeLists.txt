@@ -1,18 +1,14 @@
-cmake_minimum_required(VERSION 3.16)
 
-project(monorepo-shared VERSION 1.0.0 LANGUAGES CXX)
-set(COMPONENT_NAME ${PROJECT_NAME})
 
-include(GNUInstallDirs)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(COMPONENT_NAME "shared")
 
 
 file(GLOB SRC libshared/*.cpp)
+file(GLOB HEADER libshared/*.h)
 
 add_library(${COMPONENT_NAME} ${SRC})
-add_library(monorepo::shared ALIAS ${COMPONENT_NAME})
+add_library("${project_namespace}::shared" ALIAS ${COMPONENT_NAME})
+set_target_properties(${COMPONENT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${COMPONENT_NAME}")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -22,42 +18,21 @@ target_include_directories(${COMPONENT_NAME}
         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
-set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${COMPONENT_NAME}")
 set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
-set(version_config "${generated_dir}/${PROJECT_NAME}-config-version.cmake")
-set(component_config "${generated_dir}/${PROJECT_NAME}-config.cmake")
-set(project_config "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Findmonorepo.cmake")
-set(TARGETS_EXPORT_NAME "${PROJECT_NAME}-targets")
-set(namespace "monorepo::")
+set(targets_export_name "${PROJECT_NAME}-${COMPONENT_NAME}-targets")
 
-include(CMakePackageConfigHelpers)
 
-write_basic_package_version_file(
-        "${version_config}" COMPATIBILITY SameMajorVersion
+install(TARGETS "${COMPONENT_NAME}"
+        EXPORT "${targets_export_name}"
 )
 
-configure_package_config_file(
-        "cmake/config.cmake.in"
-        "${component_config}"
-        INSTALL_DESTINATION "${config_install_dir}"
-)
+install(FILES ${HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}/${COMPONENT_NAME})
 
-install(TARGETS monorepo-shared
-        EXPORT "${TARGETS_EXPORT_NAME}"
-)
-
-install(FILES "${component_config}" "${version_config}"
+install(EXPORT "${targets_export_name}"
+        NAMESPACE "${project_namespace}::"
         DESTINATION "${config_install_dir}"
 )
 
-install(FILES "${project_config}"
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/monorepo"
-        RENAME "monorepo-config.cmake"
-)
-
-install(EXPORT "${TARGETS_EXPORT_NAME}"
-        NAMESPACE "${namespace}"
-        DESTINATION "${config_install_dir}"
-)
+list(APPEND package_components "${COMPONENT_NAME}")
 
 include(CPack)

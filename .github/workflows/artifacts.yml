@@ -29,18 +29,18 @@ jobs:
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_BUILD_TYPE=Debug
         -DCPACK_PACKAGE_VERSION="${{ steps.strings.outputs.build-version }}"
-        -S ${{ github.workspace }}/libshared
+        -S ${{ github.workspace }}
 
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug
 
     - name: Package
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target package
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target libshared
 
     - uses: actions/upload-artifact@v4
       with:
-        name: monorepo-shared
-        path: ${{ steps.strings.outputs.build-output-dir }}/monorepo-shared-*
+        name: build-cache
+        path: ${{ steps.strings.outputs.build-output-dir }}
 
   alpha:
     runs-on: ubuntu-latest
@@ -62,19 +62,13 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: monorepo-shared
+          name: build-cache
           path: ${{ steps.strings.outputs.build-output-dir }}
-
-      - name: Unpack Artifact
-        shell: bash
-        run: |
-          sh ${{ steps.strings.outputs.build-output-dir }}/monorepo-shared-*.sh --skip-license --prefix=$(realpath ~/.local)
 
       - name: Configure CMake
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
-          -DCMAKE_PREFIX_PATH="~/.local"
-          -S ${{ github.workspace }}/alpha
+          -S ${{ github.workspace }}
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target alpha
