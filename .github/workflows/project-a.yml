@@ -28,11 +28,17 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+        [ "$VERSION" == "main" ] && VERSION=latest
+        echo VERSION=$VERSION
+        echo "build-version=${VERSION}" >> "$GITHUB_OUTPUT"
 
     - name: Configure CMake
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_BUILD_TYPE=${{env.build_type}}
+        -DCPACK_PACKAGE_VERSION="${{ steps.strings.outputs.build-version }}"
         -S ${{ github.workspace }}/${{env.project_name}}
 
     - uses: actions/upload-artifact@v4
@@ -126,12 +132,6 @@ jobs:
         with:
           name: applications-*
           path: ${{ steps.strings.outputs.build-output-dir }}
-
-      - name: Configure CMake
-        run: >
-          cmake -B ${{ steps.strings.outputs.build-output-dir }}
-          -DCPACK_PACKAGE_VERSION="${{ steps.strings.outputs.build-version }}"
-          -S ${{ github.workspace }}/${{env.project_name}}
 
       - name: Package
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target package
