@@ -23,12 +23,12 @@ get_filename_component(_monorepo_install_prefix "${CMAKE_CURRENT_LIST_DIR}/.." A
 set(_monorepo_NOTFOUND_MESSAGE)
 
 foreach(module ${monorepo_FIND_COMPONENTS})
-    find_package(monorepo${module}
+    find_package(monorepo-${module}
             ${_monorepo_FIND_PARTS_QUIET}
             ${_monorepo_FIND_PARTS_REQUIRED}
             PATHS ${_monorepo_module_paths} NO_DEFAULT_PATH
     )
-    if (NOT monorepo${module}_FOUND)
+    if (NOT monorepo-${module}_FOUND)
         string(CONFIGURE ${_monorepo_module_location_template} _expected_module_location @ONLY)
 
         if (monorepo_FIND_REQUIRED_${module})
