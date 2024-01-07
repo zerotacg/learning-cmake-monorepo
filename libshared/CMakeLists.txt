@@ -24,7 +24,8 @@ target_include_directories(monorepo-shared
 set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
 set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
 set(version_config "${generated_dir}/${PROJECT_NAME}-config-version.cmake")
-set(project_config "${generated_dir}/${PROJECT_NAME}-config.cmake")
+set(component_config "${generated_dir}/${PROJECT_NAME}-config.cmake")
+set(project_config "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Findmonorepo.cmake")
 set(targets_export_name "${PROJECT_NAME}-targets")
 set(namespace "monorepo::")
 
@@ -36,7 +37,7 @@ write_basic_package_version_file(
 
 configure_package_config_file(
         "cmake/config.cmake.in"
-        "${project_config}"
+        "${component_config}"
         INSTALL_DESTINATION "${config_install_dir}"
 )
 
@@ -44,8 +45,7 @@ install(TARGETS monorepo-shared
         EXPORT "${targets_export_name}"
 )
 
-install(
-        FILES "${project_config}" "${version_config}"
+install(FILES "${project_config}" "${component_config}" "${version_config}"
         DESTINATION "${config_install_dir}"
 )
 
