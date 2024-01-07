@@ -64,13 +64,13 @@ jobs:
           - shared
           - special
     steps:
-      - uses: actions/checkout@v4
-
       - uses: actions/download-artifact@v4
         with:
           pattern: configure-*
           merge-multiple: true
           path: ${{ needs.configure.outputs.build-output-dir }}
+
+      - uses: actions/checkout@v4
 
       - name: Debug
         run: |
