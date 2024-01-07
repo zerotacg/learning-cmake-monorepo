@@ -42,7 +42,7 @@ jobs:
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
           -DCMAKE_BUILD_TYPE=${{env.build_type}}
-          -DCPACK_PACKAGE_VERSION="${{ steps.strings.outputs.build-version }}"
+          -DCPACK_PACKAGE_VERSION="${{ steps.strings.outputs.version }}"
           -S ${{ github.workspace }}/${{env.project_name}}
 
       - name: Debug
@@ -51,7 +51,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: configure
+          name: configure-${{ steps.strings.outputs.version }}
           path: ${{ steps.strings.outputs.build-output-dir }}
 
   libraries:
@@ -68,7 +68,8 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: configure
+          pattern: configure-*
+          merge-multiple: true
           path: ${{ needs.configure.outputs.build-output-dir }}
 
       - name: Debug
@@ -81,7 +82,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: libraries-${{ matrix.target }}
+          name: libraries-${{ matrix.target }}-${{ needs.configure.outputs.version }}
           path: ${{ needs.configure.outputs.build-output-dir }}
 
   applications:
