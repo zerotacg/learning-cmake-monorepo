@@ -5,10 +5,12 @@ on:
     branches: [ "main", "feature/*" ]
     paths:
       - project-b/**
+      - .github/workflows/project-b.yml
   pull_request:
     branches: [ "main" ]
     paths:
       - project-b/**
+      - .github/workflows/project-b.yml
 
 env:
   project_name: project-b
