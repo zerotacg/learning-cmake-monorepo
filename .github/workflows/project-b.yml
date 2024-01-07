@@ -57,11 +57,11 @@ jobs:
         path: ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target gamma
 
     - uses: actions/upload-artifact@v4
       with:
-        name: build-${{ vars.JOB_NAME }}
+        name: build-gamma
         path: ${{ steps.strings.outputs.build-output-dir }}
 
   package:
@@ -93,7 +93,7 @@ jobs:
           -S ${{ github.workspace }}/${{env.project_name}}
 
       - name: Package
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target package
 
       - uses: actions/upload-artifact@v4
         with:

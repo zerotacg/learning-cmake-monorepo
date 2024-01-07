@@ -57,11 +57,11 @@ jobs:
         path: ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target shared
 
     - uses: actions/upload-artifact@v4
       with:
-        name: build-${{ vars.JOB_NAME }}
+        name: build-shared
         path: ${{ steps.strings.outputs.build-output-dir }}
 
   special:
@@ -83,11 +83,11 @@ jobs:
         path: ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target special
 
     - uses: actions/upload-artifact@v4
       with:
-        name: build-${{ vars.JOB_NAME }}
+        name: build-special
         path: ${{ steps.strings.outputs.build-output-dir }}
 
   alpha:
@@ -114,11 +114,11 @@ jobs:
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target alpha
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build-${{ vars.JOB_NAME }}
+          name: build-alpha
           path: ${{ steps.strings.outputs.build-output-dir }}
 
   beta:
@@ -140,11 +140,11 @@ jobs:
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target beta
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build-${{ vars.JOB_NAME }}
+          name: build-beta
           path: ${{ steps.strings.outputs.build-output-dir }}
 
   package:
@@ -176,7 +176,7 @@ jobs:
           -S ${{ github.workspace }}/${{env.project_name}}
 
       - name: Package
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target package
 
       - uses: actions/upload-artifact@v4
         with:
