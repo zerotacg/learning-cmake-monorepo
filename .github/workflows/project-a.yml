@@ -83,7 +83,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: libraries-${{ matrix.target }}-${{ needs.configure.outputs.version }}
-          path: ${{ needs.configure.outputs.build-output-dir }}
+          path: ${{ needs.configure.outputs.build-output-dir }}/${{ matrix.target }}
 
   applications:
     runs-on: ubuntu-latest
@@ -99,9 +99,21 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          pattern: libraries-*
+          pattern: configure-*
           merge-multiple: true
           path: ${{ needs.configure.outputs.build-output-dir }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: libraries-shared-*
+          merge-multiple: true
+          path: ${{ needs.configure.outputs.build-output-dir }}/shared
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: libraries-special-*
+          merge-multiple: true
+          path: ${{ needs.configure.outputs.build-output-dir }}/special
 
       - name: Debug
         run: |
