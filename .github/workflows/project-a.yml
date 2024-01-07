@@ -104,12 +104,12 @@ jobs:
           find ${{ needs.configure.outputs.build-output-dir }}
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target ${{ matrix.target }}
+        run: cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{env.build_type}} --target ${{ matrix.target }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: applications-${{ matrix.target }}
-          path: ${{ steps.strings.outputs.build-output-dir }}
+          path: ${{ needs.configure.outputs.build-output-dir }}
 
   package:
     runs-on: ubuntu-latest
@@ -131,13 +131,13 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: applications-beta
-          path: ${{ steps.strings.outputs.build-output-dir }}
+          path: ${{ needs.configure.outputs.build-output-dir }}
 
       - name: Package
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target package
+        run: cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{env.build_type}} --target package
 
       - uses: actions/upload-artifact@v4
         with:
           name: package
-          path: ${{ steps.strings.outputs.build-output-dir }}/${{env.project_name}}-*
+          path: ${{ needs.configure.outputs.build-output-dir }}/${{env.project_name}}-*
 
