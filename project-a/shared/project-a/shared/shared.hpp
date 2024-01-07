@@ -1,7 +1,7 @@
 #ifndef MONOREPO_SHARED_SHARED_H
 #define MONOREPO_SHARED_SHARED_H
 
-namespace monorepo {
+namespace project_a::shared {
 
 void helloWorld();
 

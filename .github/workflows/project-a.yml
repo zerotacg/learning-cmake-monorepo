@@ -1,10 +1,18 @@
-name: Build Artifacts
+name: Build and Package Project A
 
 on:
   push:
     branches: [ "main", "feature/*" ]
+    paths:
+      - project-a/**
   pull_request:
     branches: [ "main" ]
+    paths:
+      - project-a/**
+
+env:
+  project_name: project-a
+  build_type: Debug
 
 jobs:
   configure:
@@ -22,8 +30,8 @@ jobs:
     - name: Configure CMake
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_BUILD_TYPE=Debug
-        -S ${{ github.workspace }}
+        -DCMAKE_BUILD_TYPE=${{env.build_type}}
+        -S ${{ github.workspace }}/${{env.project_name}}
 
     - uses: actions/upload-artifact@v4
       with:
@@ -49,16 +57,42 @@ jobs:
         path: ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target shared
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
 
     - uses: actions/upload-artifact@v4
       with:
-        name: build-shared
+        name: build-${{ vars.JOB_NAME }}
+        path: ${{ steps.strings.outputs.build-output-dir }}
+
+  special:
+    runs-on: ubuntu-latest
+    needs: [configure]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: build-configure
+        path: ${{ steps.strings.outputs.build-output-dir }}
+
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: build-${{ vars.JOB_NAME }}
         path: ${{ steps.strings.outputs.build-output-dir }}
 
   alpha:
     runs-on: ubuntu-latest
-    needs: [shared]
+    needs: [shared, special]
 
     steps:
       - uses: actions/checkout@v4
@@ -74,12 +108,17 @@ jobs:
           name: build-shared
           path: ${{ steps.strings.outputs.build-output-dir }}
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-special
+          path: ${{ steps.strings.outputs.build-output-dir }}
+
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target alpha
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build-alpha
+          name: build-${{ vars.JOB_NAME }}
           path: ${{ steps.strings.outputs.build-output-dir }}
 
   beta:
@@ -94,11 +133,6 @@ jobs:
         shell: bash
         run: |
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          [ "$VERSION" == "main" ] && VERSION=latest
-          echo VERSION=$VERSION
-          echo "build-version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - uses: actions/download-artifact@v4
         with:
@@ -106,11 +140,11 @@ jobs:
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target beta
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build-beta
+          name: build-${{ vars.JOB_NAME }}
           path: ${{ steps.strings.outputs.build-output-dir }}
 
   package:
@@ -142,7 +176,7 @@ jobs:
           -S ${{ github.workspace }}
 
       - name: Package
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target package
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target ${{ vars.JOB_NAME }}
 
       - uses: actions/upload-artifact@v4
         with:
