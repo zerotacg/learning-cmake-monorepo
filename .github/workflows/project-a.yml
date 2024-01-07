@@ -58,7 +58,6 @@ jobs:
       matrix:
         target:
           - shared
-          - special
     steps:
       - uses: actions/checkout@v4
 
@@ -85,7 +84,6 @@ jobs:
       matrix:
         target:
           - alpha
-          - beta
     steps:
       - uses: actions/checkout@v4
 
