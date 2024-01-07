@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(monorepo-libshared VERSION 1.0.0 LANGUAGES CXX)
+project(monorepo-shared VERSION 1.0.0 LANGUAGES CXX)
+set(COMPONENT_NAME ${PROJECT_NAME})
 
 include(GNUInstallDirs)
 
@@ -10,18 +11,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB SRC libshared/*.cpp)
 
-add_library(monorepo-shared ${SRC})
-add_library(monorepo::shared ALIAS monorepo-shared)
+add_library(${COMPONENT_NAME} ${SRC})
+add_library(monorepo::shared ALIAS ${COMPONENT_NAME})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-target_include_directories(monorepo-shared
+target_include_directories(${COMPONENT_NAME}
         INTERFACE
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
-set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${COMPONENT_NAME}")
 set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
 set(version_config "${generated_dir}/${PROJECT_NAME}-config-version.cmake")
 set(component_config "${generated_dir}/${PROJECT_NAME}-config.cmake")
@@ -45,8 +46,13 @@ install(TARGETS monorepo-shared
         EXPORT "${targets_export_name}"
 )
 
-install(FILES "${project_config}" "${component_config}" "${version_config}"
+install(FILES "${component_config}" "${version_config}"
         DESTINATION "${config_install_dir}"
+)
+
+install(FILES "${project_config}"
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/monorepo"
+        RENAME "monorepo-config.cmake"
 )
 
 install(EXPORT "${targets_export_name}"
