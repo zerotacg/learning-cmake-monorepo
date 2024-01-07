@@ -64,10 +64,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Debug
-      run: |
-        find ${{ needs.configure.outputs.build-output-dir }}
-
     - uses: actions/download-artifact@v4
       with:
         name: configure
