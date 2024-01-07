@@ -1,4 +1,4 @@
-#include <libshared/libshared.h>
+#include <monorepo/shared/shared.h>
 
 #include <iostream>
 
