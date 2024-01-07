@@ -45,10 +45,6 @@ jobs:
           -DCPACK_PACKAGE_VERSION="${{ steps.strings.outputs.version }}"
           -S ${{ github.workspace }}/${{env.project_name}}
 
-      - name: Debug
-        run: |
-          find ${{ steps.strings.outputs.build-output-dir }}
-
       - uses: actions/upload-artifact@v4
         with:
           name: configure-${{ steps.strings.outputs.version }}
@@ -64,21 +60,17 @@ jobs:
           - shared
           - special
     steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           pattern: configure-*
           merge-multiple: true
-          path: ${{ needs.configure.outputs.build-output-dir }}
-
-      - uses: actions/checkout@v4
-
-      - name: Debug
-        run: |
-          find ${{ needs.configure.outputs.build-output-dir }}
+          path: ${{ needs.configure.outputs.build-output-dir }}/${{ matrix.target }}
 
       - name: Build
         run: |
-          VERBOSE=1 cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{ env.build_type }} --target ${{ matrix.target }}
+          VERBOSE=1 cmake --build ${{ needs.configure.outputs.build-output-dir }}/${{ matrix.target }} --config ${{ env.build_type }} --target ${{ matrix.target }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -99,34 +91,18 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          pattern: configure-*
+          pattern: libraries-*
           merge-multiple: true
-          path: ${{ needs.configure.outputs.build-output-dir }}
-
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: libraries-shared-*
-          merge-multiple: true
-          path: ${{ needs.configure.outputs.build-output-dir }}/shared
-
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: libraries-special-*
-          merge-multiple: true
-          path: ${{ needs.configure.outputs.build-output-dir }}/special
-
-      - name: Debug
-        run: |
-          find ${{ needs.configure.outputs.build-output-dir }}
+          path: ${{ needs.configure.outputs.build-output-dir }}/${{ matrix.target }}
 
       - name: Build
         run: |
-          VERBOSE=1 cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{env.build_type}} --target ${{ matrix.target }}
+          VERBOSE=1 cmake --build ${{ needs.configure.outputs.build-output-dir }}/${{ matrix.target }} --config ${{env.build_type}} --target ${{ matrix.target }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: applications-${{ matrix.target }}
-          path: ${{ needs.configure.outputs.build-output-dir }}
+          path: ${{ needs.configure.outputs.build-output-dir }}/${{ matrix.target }}
 
   package:
     runs-on: ubuntu-latest
@@ -140,10 +116,6 @@ jobs:
           pattern: applications-*
           merge-multiple: true
           path: ${{ needs.configure.outputs.build-output-dir }}
-
-      - name: Debug
-        run: |
-          find ${{ needs.configure.outputs.build-output-dir }}
 
       - uses: actions/download-artifact@v4
         with:
