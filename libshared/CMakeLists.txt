@@ -23,9 +23,9 @@ target_include_directories(monorepo-shared
 
 set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
 set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
-set(version_config "${generated_dir}/${PROJECT_NAME}ConfigVersion.cmake")
+set(version_config "${generated_dir}/${PROJECT_NAME}-config-version.cmake")
 set(project_config "${generated_dir}/${PROJECT_NAME}-config.cmake")
-set(TARGETS_EXPORT_NAME "${PROJECT_NAME}Targets")
+set(targets_export_name "${PROJECT_NAME}-targets")
 set(namespace "monorepo::")
 
 include(CMakePackageConfigHelpers)
@@ -41,7 +41,7 @@ configure_package_config_file(
 )
 
 install(TARGETS monorepo-shared
-        EXPORT "${TARGETS_EXPORT_NAME}"
+        EXPORT "${targets_export_name}"
 )
 
 install(
@@ -49,7 +49,7 @@ install(
         DESTINATION "${config_install_dir}"
 )
 
-install(EXPORT "${TARGETS_EXPORT_NAME}"
+install(EXPORT "${targets_export_name}"
         NAMESPACE "${namespace}"
         DESTINATION "${config_install_dir}"
 )
