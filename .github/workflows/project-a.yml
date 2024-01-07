@@ -51,12 +51,10 @@ jobs:
     needs: [configure]
     strategy:
       fail-fast: true
-
       matrix:
         target:
           - shared
           - special
-
     steps:
     - uses: actions/checkout@v4
 
@@ -99,7 +97,11 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: libraries-*
+          name: libraries-shared
+          path: ${{ steps.strings.outputs.build-output-dir }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: libraries-special
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Build
@@ -130,7 +132,12 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: applications-*
+          name: applications-alpha
+          path: ${{ steps.strings.outputs.build-output-dir }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: applications-beta
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Package
