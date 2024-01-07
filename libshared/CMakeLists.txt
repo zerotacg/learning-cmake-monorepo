@@ -43,7 +43,7 @@ configure_package_config_file(
 )
 
 install(TARGETS monorepo-shared
-        EXPORT "${targets_export_name}"
+        EXPORT "${TARGETS_EXPORT_NAME}"
 )
 
 install(FILES "${component_config}" "${version_config}"
