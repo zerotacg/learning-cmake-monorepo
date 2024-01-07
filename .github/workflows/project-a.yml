@@ -74,7 +74,8 @@ jobs:
           find ${{ needs.configure.outputs.build-output-dir }}
 
       - name: Build
-        run: cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{ env.build_type }} --target ${{ matrix.target }}
+        run: |
+          cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{ env.build_type }} --target ${{ matrix.target }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -104,7 +105,8 @@ jobs:
           find ${{ needs.configure.outputs.build-output-dir }}
 
       - name: Build
-        run: cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{env.build_type}} --target ${{ matrix.target }}
+        run: |
+          VERBOSE=1 cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{env.build_type}} --target ${{ matrix.target }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -134,7 +136,9 @@ jobs:
           path: ${{ needs.configure.outputs.build-output-dir }}
 
       - name: Package
-        run: cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{env.build_type}} --target package
+        run: |
+          cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{env.build_type}} --target package
+          tar --list --file ${{ needs.configure.outputs.build-output-dir }}/${{env.project_name}}-*.tar.gz
 
       - uses: actions/upload-artifact@v4
         with:
