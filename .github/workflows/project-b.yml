@@ -1,4 +1,4 @@
-name: Build and Package Project B
+name: "Project B: Build and Package"
 
 on:
   push:
@@ -59,7 +59,7 @@ jobs:
         path: ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target gamma
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target gamma
 
     - uses: actions/upload-artifact@v4
       with:
@@ -95,7 +95,7 @@ jobs:
           -S ${{ github.workspace }}/${{env.project_name}}
 
       - name: Package
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target package
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target package
 
       - uses: actions/upload-artifact@v4
         with:

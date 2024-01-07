@@ -1,4 +1,4 @@
-name: Build and Package Project A
+name: "Project A: Build and Package"
 
 on:
   push:
@@ -59,7 +59,7 @@ jobs:
         path: ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target shared
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target shared
 
     - uses: actions/upload-artifact@v4
       with:
@@ -85,7 +85,7 @@ jobs:
         path: ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target special
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target special
 
     - uses: actions/upload-artifact@v4
       with:
@@ -116,7 +116,7 @@ jobs:
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target alpha
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target alpha
 
       - uses: actions/upload-artifact@v4
         with:
@@ -142,7 +142,7 @@ jobs:
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target beta
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target beta
 
       - uses: actions/upload-artifact@v4
         with:
@@ -178,7 +178,7 @@ jobs:
           -S ${{ github.workspace }}/${{env.project_name}}
 
       - name: Package
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug --target package
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{env.build_type}} --target package
 
       - uses: actions/upload-artifact@v4
         with:

@@ -1,5 +1,5 @@
-#ifndef MONOREPO_SPECIAL_SPECIAL_H
-#define MONOREPO_SPECIAL_SPECIAL_H
+#ifndef PROJECT_A_SPECIAL_SPECIAL_H
+#define PROJECT_A_SPECIAL_SPECIAL_H
 
 namespace project_a::special {
 
@@ -7,4 +7,4 @@ namespace project_a::special {
 
 }
 
-#endif // MONOREPO_SPECIAL_SPECIAL_H
+#endif // PROJECT_A_SPECIAL_SPECIAL_H
