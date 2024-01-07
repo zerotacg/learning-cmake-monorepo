@@ -27,7 +27,7 @@ set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
 set(version_config "${generated_dir}/${PROJECT_NAME}-config-version.cmake")
 set(component_config "${generated_dir}/${PROJECT_NAME}-config.cmake")
 set(project_config "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Findmonorepo.cmake")
-set(targets_export_name "${PROJECT_NAME}-targets")
+set(TARGETS_EXPORT_NAME "${PROJECT_NAME}-targets")
 set(namespace "monorepo::")
 
 include(CMakePackageConfigHelpers)
@@ -55,7 +55,7 @@ install(FILES "${project_config}"
         RENAME "monorepo-config.cmake"
 )
 
-install(EXPORT "${targets_export_name}"
+install(EXPORT "${TARGETS_EXPORT_NAME}"
         NAMESPACE "${namespace}"
         DESTINATION "${config_install_dir}"
 )
