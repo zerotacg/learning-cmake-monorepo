@@ -136,11 +136,6 @@ jobs:
           merge-multiple: true
           path: ${{ needs.configure.outputs.build-output-dir }}
 
-      - uses: actions/download-artifact@v4
-        with:
-          name: applications-beta
-          path: ${{ needs.configure.outputs.build-output-dir }}
-
       - name: Package
         run: |
           cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{env.build_type}} --target package
