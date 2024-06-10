@@ -1,9 +1,8 @@
 set(COMPONENT_NAME "shared")
 
-file(GLOB SRC "${PROJECT_NAME}/${COMPONENT_NAME}/*.cpp")
-file(GLOB HEADER "${PROJECT_NAME}/${COMPONENT_NAME}/*.hpp")
-
-add_library(${COMPONENT_NAME} ${SRC})
+add_library(${COMPONENT_NAME}
+        project-a/shared/shared.cpp
+)
 add_library("${project_namespace}::${COMPONENT_NAME}" ALIAS ${COMPONENT_NAME})
 set_target_properties(${COMPONENT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${COMPONENT_NAME}")
 
@@ -23,7 +22,11 @@ install(TARGETS "${COMPONENT_NAME}"
         EXPORT "${targets_export_name}"
 )
 
-install(FILES ${HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}/${COMPONENT_NAME})
+install(FILES
+        project-a/shared/shared.cpp
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}/${COMPONENT_NAME}
+)
+
 
 install(EXPORT "${targets_export_name}"
         NAMESPACE "${project_namespace}::"

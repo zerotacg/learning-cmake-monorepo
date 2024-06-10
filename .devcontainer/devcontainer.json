@@ -1,3 +1,13 @@
 {
-  "build": { "dockerfile": "Dockerfile" }
+  "image": "mcr.microsoft.com/devcontainers/cpp:1-ubuntu-24.04",
+  "features": {
+  },
+  "containerUser": "ubuntu",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools-extension-pack"
+      ]
+    }
+  }
 }

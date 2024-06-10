@@ -1,4 +1,4 @@
-file(GLOB SRC beta/*.cpp)
-
-add_executable(beta ${SRC})
+add_executable(beta
+        beta/main.cpp
+)
 target_link_libraries(beta "${project_namespace}::shared")

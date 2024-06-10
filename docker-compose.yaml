@@ -1,6 +1,0 @@
-services:
-  devcontainer:
-    image: "zerotacg/learning-cmake-monorepo-devcontainer"
-    build: .devcontainer
-    volumes:
-      - ".:/home/app/source"
