@@ -23,7 +23,7 @@ install(TARGETS "${COMPONENT_NAME}"
 )
 
 install(FILES
-        project-a/shared/shared.cpp
+        project-a/shared/shared.hpp
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}/${COMPONENT_NAME}
 )
 
