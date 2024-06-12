@@ -23,11 +23,7 @@ jobs:
       build-output-dir: ${{ steps.strings.outputs.build-output-dir }}
       version: ${{ steps.strings.outputs.version }}
     steps:
-      - name: Dependencies
-        run: >
-          sudo apt update;
-          sudo apt install --yes
-          ninja-build
+      - uses: lukka/get-cmake@latest
 
       - uses: actions/checkout@v4
 
@@ -67,11 +63,7 @@ jobs:
           - shared
           - special
     steps:
-      - name: Dependencies
-        run: >
-          sudo apt update;
-          sudo apt install --yes
-          ninja-build
+      - uses: lukka/get-cmake@latest
 
       - uses: actions/checkout@v4
 
@@ -83,7 +75,7 @@ jobs:
 
       - name: Build
         run: |
-          VERBOSE=1 cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{ env.build_type }} --target ${{ matrix.target }}
+          cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{ env.build_type }} --target ${{ matrix.target }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -100,11 +92,7 @@ jobs:
           - alpha
           - beta
     steps:
-      - name: Dependencies
-        run: >
-          sudo apt update;
-          sudo apt install --yes
-          ninja-build
+      - uses: lukka/get-cmake@latest
 
       - uses: actions/checkout@v4
 
@@ -116,7 +104,7 @@ jobs:
 
       - name: Build
         run: |
-          VERBOSE=1 cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{env.build_type}} --target ${{ matrix.target }}
+          cmake --build ${{ needs.configure.outputs.build-output-dir }} --config ${{env.build_type}} --target ${{ matrix.target }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -128,11 +116,7 @@ jobs:
     needs: [ configure, libraries, applications ]
 
     steps:
-      - name: Dependencies
-        run: >
-          sudo apt update;
-          sudo apt install --yes
-          ninja-build
+      - uses: lukka/get-cmake@latest
 
       - uses: actions/checkout@v4
 
