@@ -4,7 +4,12 @@ project(monorepo VERSION 1.0.0)
 
 enable_testing()
 
-set(subprojects project-a project-b)
+set(subprojects
+        project-a
+        project-b
+        CACHE STRING "Subprojects to use directly from source"
+)
+
 macro(find_package)
     if (NOT "${ARGV0}" IN_LIST subprojects)
         _find_package(${ARGV})

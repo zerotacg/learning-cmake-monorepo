@@ -70,10 +70,18 @@ jobs:
           # Optional, a directory where to extract artifact(s), defaults to the current directory
           path: build
 
-      - run: find .
+      - name: Install Dependency
+        run: >
+          build/package-project-a-*/project-a-*.sh
+          --skip-license
+          --include-subdir
+          --prefix=build
 
       - name: Configure CMake
-        run: cmake --preset ${{ env.project_name }}
+        run: >
+          cmake --preset ${{ env.project_name }}
+          -Dsubprojects=""
+          -DCMAKE_PREFIX_PATH=$(realpath build/project-a-*)
 
       - uses: actions/upload-artifact@v4
         with:
