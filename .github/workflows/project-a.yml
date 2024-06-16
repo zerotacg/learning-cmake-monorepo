@@ -82,11 +82,6 @@ jobs:
           name: build-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-output-dir }}
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: install-${{ needs.strings.outputs.build-version }}
-          path: ${{ needs.strings.outputs.build-output-dir }}
-
   package:
     runs-on: ubuntu-latest
     needs: [ strings, build ]
