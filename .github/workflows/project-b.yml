@@ -70,6 +70,8 @@ jobs:
           # Optional, a directory where to extract artifact(s), defaults to the current directory
           path: build
 
+      - run: find .
+
       - name: Configure CMake
         run: cmake --preset ${{ env.project_name }}
 
