@@ -71,8 +71,11 @@ jobs:
           path: build
 
       - name: Install Dependency
-        run: |
-          sh ${{ needs.strings.outputs.build-output-dir }}/package-project-a-*/project-a/project-a-*.sh --skip-license --include-subdir --prefix=${{ needs.strings.outputs.build-output-dir }}
+        run: >
+          sh ${{ needs.strings.outputs.build-output-dir }}/package-project-a-*/project-a-*.sh
+          --skip-license
+          --include-subdir
+          --prefix=${{ needs.strings.outputs.build-output-dir }}
 
       - name: Configure CMake
         run: >
