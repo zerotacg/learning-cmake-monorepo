@@ -11,7 +11,7 @@
       "name": "project-a",
       "cacheVariables": {
         "CPACK_PACKAGE_NAME": "${presetName}",
-        "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};ALL;/"
+        "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
       }
     },
     {
@@ -19,7 +19,7 @@
       "name": "project-b",
       "cacheVariables": {
         "CPACK_PACKAGE_NAME": "${presetName}",
-        "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};ALL;/"
+        "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
       }
     }
   ],

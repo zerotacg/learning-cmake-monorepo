@@ -10,3 +10,5 @@ enable_testing()
 find_package(project-a CONFIG REQUIRED COMPONENTS shared)
 
 add_subdirectory(gamma)
+
+include(CPack)
