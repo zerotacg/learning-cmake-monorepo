@@ -72,9 +72,7 @@ jobs:
           path: ${{ needs.strings.outputs.build-output-dir }}
 
       - name: Build
-        run: |
-          find .
-          cmake --build --preset ${{ env.project_name }}
+        run: cmake --build --preset ${{ env.project_name }}
 
       - uses: actions/upload-artifact@v4
         with:

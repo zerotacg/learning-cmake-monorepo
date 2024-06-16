@@ -18,7 +18,7 @@ on:
       - CMakePresets.txt
 
   workflow_run:
-    workflows: ["CI/CD Pipeline"]
+    workflows: ["Project A: Build and Package"]
     branches:
       - "main"
     types:
@@ -75,7 +75,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: configure-${{ steps.strings.outputs.build-version }}
+          name: configure-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-output-dir }}
 
   build:
@@ -89,6 +89,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           pattern: configure-*
+          merge-multiple: true
           path: ${{ needs.strings.outputs.build-output-dir }}
 
       - name: Build
@@ -111,6 +112,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           pattern: build-*
+          merge-multiple: true
           path: ${{ needs.strings.outputs.build-output-dir }}
 
       - name: Package
@@ -118,6 +120,6 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: package-${{ needs.strings.outputs.version }}
-          path: ${{ needs.strings.outputs.build-output-dir }}/${{ env.project_name }}-*
+          name: package-${{ needs.strings.outputs.build-version }}
+          path: ${{ needs.strings.outputs.build-output-dir }}/**/${{ env.project_name }}-*
 
