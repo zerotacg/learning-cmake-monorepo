@@ -2,20 +2,21 @@
   "version": 6,
   "configurePresets": [
     {
-      "name": "default",
+      "name": "subproject",
+      "hidden": true,
       "generator": "Ninja Multi-Config",
-      "binaryDir": "${sourceDir}/build/${presetName}"
-    },
-    {
-      "inherits": "default",
-      "name": "project-a",
+      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CPACK_PACKAGE_NAME": "${presetName}",
         "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
       }
     },
     {
-      "inherits": "default",
+      "inherits": "subproject",
+      "name": "project-a"
+    },
+    {
+      "inherits": "subproject",
       "name": "project-b",
       "cacheVariables": {
         "CPACK_PACKAGE_NAME": "${presetName}",
@@ -25,31 +26,28 @@
   ],
   "buildPresets": [
     {
-      "name": "default",
-      "configurePreset": "default",
-      "configuration": "Release"
+      "name": "subproject",
+      "hidden": true,
+      "configuration": "Release",
+      "targets": [
+        "${presetName}/package"
+      ]
     },
     {
-      "inherits": "default",
+      "inherits": "subproject",
       "name": "project-a",
-      "configurePreset": "project-a",
-      "targets": [
-        "${presetName}/package"
-      ]
+      "configurePreset": "project-a"
     },
     {
-      "inherits": "default",
+      "inherits": "subproject",
       "name": "project-b",
-      "configurePreset": "project-b",
-      "targets": [
-        "${presetName}/package"
-      ]
+      "configurePreset": "project-b"
     }
   ],
   "testPresets": [
     {
-      "name": "default",
-      "configurePreset": "default",
+      "name": "subproject",
+      "hidden": true,
       "configuration": "Release",
       "output": {
         "outputOnFailure": true,
@@ -66,20 +64,20 @@
       }
     },
     {
-      "inherits": "default",
+      "inherits": "subproject",
       "name": "project-a",
       "configurePreset": "project-a"
     },
     {
-      "inherits": "default",
+      "inherits": "subproject",
       "name": "project-b",
       "configurePreset": "project-b"
     }
   ],
   "packagePresets": [
     {
-      "name": "default",
-      "configurePreset": "default",
+      "name": "subproject",
+      "hidden": true,
       "configurations": [
         "Release"
       ],
@@ -89,12 +87,12 @@
       ]
     },
     {
-      "inherits": "default",
+      "inherits": "subproject",
       "name": "project-a",
       "configurePreset": "project-a"
     },
     {
-      "inherits": "default",
+      "inherits": "subproject",
       "name": "project-b",
       "configurePreset": "project-b"
     }
