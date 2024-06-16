@@ -1,10 +1,8 @@
 #include <iostream>
-#include <project-a/special/special.hpp>
-
-using namespace project_a;
+#include <project-a/shared/shared.hpp>
 
 int main() {
     std::cout << "gamma: ";
-    special::helloWorld();
+    project_a::shared::helloWorld();
     return 0;
 }

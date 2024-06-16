@@ -3,5 +3,5 @@
 #include <iostream>
 
 void project_a::shared::helloWorld() {
-    std::cout << "Hello World!" << std::endl;
+    std::cout << "Shared Hello World!" << std::endl;
 }
