@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.28)
 
 project(project-b VERSION 1.0.0 LANGUAGES CXX)
 

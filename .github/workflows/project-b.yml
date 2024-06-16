@@ -8,6 +8,7 @@ on:
       - project-b/**
       - CMakeLists.txt
       - CMakePresets.txt
+
   pull_request:
     branches: [ "main" ]
     paths:
@@ -15,6 +16,13 @@ on:
       - project-b/**
       - CMakeLists.txt
       - CMakePresets.txt
+
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    branches:
+      - "main"
+    types:
+      - completed
 
 env:
   project_name: project-b

@@ -8,11 +8,19 @@
     },
     {
       "inherits": "default",
-      "name": "project-a"
+      "name": "project-a",
+      "cacheVariables": {
+        "CPACK_PACKAGE_NAME": "${presetName}",
+        "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};ALL;/"
+      }
     },
     {
       "inherits": "default",
-      "name": "project-b"
+      "name": "project-b",
+      "cacheVariables": {
+        "CPACK_PACKAGE_NAME": "${presetName}",
+        "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};ALL;/"
+      }
     }
   ],
   "buildPresets": [
@@ -23,11 +31,13 @@
     },
     {
       "inherits": "default",
-      "name": "project-a"
+      "name": "project-a",
+      "configurePreset": "project-a"
     },
     {
       "inherits": "default",
-      "name": "project-b"
+      "name": "project-b",
+      "configurePreset": "project-b"
     }
   ],
   "testPresets": [
@@ -41,6 +51,16 @@
       "execution": {
         "stopOnFailure": false
       }
+    },
+    {
+      "inherits": "default",
+      "name": "project-a",
+      "configurePreset": "project-a"
+    },
+    {
+      "inherits": "default",
+      "name": "project-b",
+      "configurePreset": "project-b"
     }
   ],
   "packagePresets": [
@@ -54,27 +74,58 @@
         "TGZ",
         "STGZ"
       ]
+    },
+    {
+      "inherits": "default",
+      "name": "project-a",
+      "configurePreset": "project-a"
+    },
+    {
+      "inherits": "default",
+      "name": "project-b",
+      "configurePreset": "project-b"
     }
   ],
   "workflowPresets": [
     {
-      "name": "default",
+      "name": "project-a",
       "steps": [
         {
           "type": "configure",
-          "name": "default"
+          "name": "project-a"
         },
         {
           "type": "build",
-          "name": "default"
+          "name": "project-a"
         },
         {
           "type": "test",
-          "name": "default"
+          "name": "project-a"
         },
         {
           "type": "package",
-          "name": "default"
+          "name": "project-a"
+        }
+      ]
+    },
+    {
+      "name": "project-b",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "project-b"
+        },
+        {
+          "type": "build",
+          "name": "project-b"
+        },
+        {
+          "type": "test",
+          "name": "project-b"
+        },
+        {
+          "type": "package",
+          "name": "project-b"
         }
       ]
     }

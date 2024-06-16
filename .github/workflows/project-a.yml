@@ -8,6 +8,7 @@ on:
       - project-a/**
       - CMakeLists.txt
       - CMakePresets.txt
+
   pull_request:
     branches: [ "main" ]
     paths:
