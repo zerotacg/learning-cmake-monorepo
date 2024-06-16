@@ -13,3 +13,5 @@ set_target_properties(${COMPONENT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-
 install(TARGETS "${COMPONENT_NAME}"
         COMPONENT "${PROJECT_NAME}"
 )
+
+add_test(NAME "can-start" COMMAND "${COMPONENT_NAME}")
