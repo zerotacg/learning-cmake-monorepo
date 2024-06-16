@@ -54,7 +54,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: configure-${{ steps.strings.outputs.build-version }}
+          name: configure-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-output-dir }}
 
   build:
@@ -71,7 +71,9 @@ jobs:
           path: ${{ needs.strings.outputs.build-output-dir }}
 
       - name: Build
-        run: cmake --build --preset ${{ env.project_name }}
+        run: |
+          find .
+          cmake --build --preset ${{ env.project_name }}
 
       - uses: actions/upload-artifact@v4
         with:
