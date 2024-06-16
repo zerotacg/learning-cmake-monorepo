@@ -131,5 +131,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: package-${{ env.project_name }}-${{ needs.strings.outputs.build-version }}
-          path: ${{ needs.strings.outputs.build-output-dir }}/*/${{ env.project_name }}-*
+          path: ${{ needs.strings.outputs.build-output-dir }}/${{ env.project_name }}/${{ env.project_name }}-*
 
