@@ -4,13 +4,17 @@ on:
   push:
     branches: [ "main", "feature/*" ]
     paths:
-      - project-b/**
       - .github/workflows/project-b.yml
+      - project-b/**
+      - CMakeLists.txt
+      - CMakePresets.txt
   pull_request:
     branches: [ "main" ]
     paths:
-      - project-b/**
       - .github/workflows/project-b.yml
+      - project-b/**
+      - CMakeLists.txt
+      - CMakePresets.txt
 
 env:
   project_name: project-b
@@ -27,7 +31,7 @@ jobs:
         id: strings
         shell: bash
         run: |
-          echo "build-output-dir=${{ github.workspace }}/build/${{ env.project_name }}" >> "$GITHUB_OUTPUT"
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
           COMMIT_HASH=${{ github.sha }}
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
@@ -39,7 +43,6 @@ jobs:
   configure:
     needs: [ strings ]
     runs-on: ubuntu-latest
-
     steps:
       - uses: lukka/get-cmake@latest
 
@@ -64,13 +67,12 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: configure
+          name: configure-${{ steps.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-output-dir }}
 
   build:
     runs-on: ubuntu-latest
     needs: [ strings, configure ]
-
     steps:
       - uses: lukka/get-cmake@latest
 
@@ -78,7 +80,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: configure
+          pattern: configure-*
           path: ${{ needs.strings.outputs.build-output-dir }}
 
       - name: Build
@@ -86,7 +88,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build
+          name: build-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-output-dir }}
 
   package:
@@ -100,14 +102,14 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: build
-          path: ${{ steps.strings.outputs.build-output-dir }}
+          pattern: build-*
+          path: ${{ needs.strings.outputs.build-output-dir }}
 
       - name: Package
         run: cpack --preset ${{ env.project_name }} -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: package
-          path: ${{ steps.strings.outputs.build-output-dir }}/${{ env.project_name }}-*
+          name: package-${{ needs.strings.outputs.version }}
+          path: ${{ needs.strings.outputs.build-output-dir }}/${{ env.project_name }}-*
 

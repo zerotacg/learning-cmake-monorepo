@@ -23,11 +23,11 @@
     },
     {
       "inherits": "default",
-      "name": "base",
-      "hidden": true,
-      "targets": [
-        "${presetName}"
-      ]
+      "name": "project-a"
+    },
+    {
+      "inherits": "default",
+      "name": "project-b"
     }
   ],
   "testPresets": [
