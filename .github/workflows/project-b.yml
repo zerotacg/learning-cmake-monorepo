@@ -41,6 +41,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: lukka/get-cmake@latest
+
       - uses: actions/checkout@v4
 
       - name: Download artifact
@@ -58,8 +60,7 @@ jobs:
           path: build
 
       - name: Configure CMake
-        run: >
-          cmake --preset ${{env.project_name}}
+        run: cmake --preset ${{env.project_name}}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -71,6 +72,8 @@ jobs:
     needs: [ strings, configure ]
 
     steps:
+      - uses: lukka/get-cmake@latest
+
       - uses: actions/checkout@v4
 
       - uses: actions/download-artifact@v4
@@ -91,6 +94,8 @@ jobs:
     needs: [ strings, build ]
 
     steps:
+      - uses: lukka/get-cmake@latest
+
       - uses: actions/checkout@v4
 
       - uses: actions/download-artifact@v4
