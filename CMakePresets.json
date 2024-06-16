@@ -6,6 +6,7 @@
       "hidden": true,
       "generator": "Ninja Multi-Config",
       "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "${sourceDir}/build/${presetName}-install",
       "cacheVariables": {
         "CPACK_PACKAGE_NAME": "${presetName}",
         "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
@@ -30,7 +31,7 @@
       "hidden": true,
       "configuration": "Release",
       "targets": [
-        "${presetName}/package"
+        "${presetName}/install"
       ]
     },
     {

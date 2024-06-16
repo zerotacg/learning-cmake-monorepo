@@ -64,11 +64,13 @@ jobs:
           workflow_conclusion: success
           branch: main
           event: push
-          name: package-.*
+          name: install-.*
           # Optional, name is treated as a regular expression if set true
           name_is_regexp: true
           # Optional, a directory where to extract artifact(s), defaults to the current directory
           path: build
+
+      - run: find .
 
       - name: Configure CMake
         run: cmake --preset ${{ env.project_name }}
@@ -101,6 +103,11 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: build-${{ needs.strings.outputs.build-version }}
+          path: ${{ needs.strings.outputs.build-output-dir }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: install-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-output-dir }}
 
   package:
