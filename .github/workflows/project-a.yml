@@ -68,6 +68,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           pattern: configure-*
+          merge-multiple: true
           path: ${{ needs.strings.outputs.build-output-dir }}
 
       - name: Build
