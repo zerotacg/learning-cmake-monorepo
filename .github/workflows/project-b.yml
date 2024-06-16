@@ -72,6 +72,7 @@ jobs:
 
       - name: Install Dependency
         run: >
+          find . ;
           build/package-project-a-*/project-a-*.sh
           --skip-license
           --include-subdir
