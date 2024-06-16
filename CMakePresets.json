@@ -6,6 +6,7 @@
       "hidden": true,
       "generator": "Ninja Multi-Config",
       "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "${sourceDir}/build/install",
       "cacheVariables": {
         "CPACK_PACKAGE_NAME": "${presetName}",
         "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
@@ -30,13 +31,20 @@
       "hidden": true,
       "configuration": "Release",
       "targets": [
-        "${presetName}/package"
+        "${presetName}/all"
       ]
     },
     {
       "inherits": "subproject",
       "name": "project-a",
       "configurePreset": "project-a"
+    },
+    {
+      "inherits": "project-a",
+      "name": "project-a/install",
+      "targets": [
+        "${presetName}"
+      ]
     },
     {
       "inherits": "subproject",
@@ -116,6 +124,10 @@
         {
           "type": "package",
           "name": "project-a"
+        },
+        {
+          "type": "build",
+          "name": "project-a/install"
         }
       ]
     },
