@@ -74,6 +74,9 @@ jobs:
       - name: Build
         run: cmake --build --preset ${{ env.project_name }}
 
+      - name: Test
+        run: ctest --preset ${{ env.project_name }}
+
       - uses: actions/upload-artifact@v4
         with:
           name: build-${{ needs.strings.outputs.build-version }}
