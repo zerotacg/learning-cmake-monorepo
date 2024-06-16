@@ -14,4 +14,4 @@ install(TARGETS "${COMPONENT_NAME}"
         COMPONENT "${PROJECT_NAME}"
 )
 
-add_test(NAME "can-start" COMMAND "${COMPONENT_NAME}")
+add_test(NAME "${PROJECT_NAME}.can-start" COMMAND "${COMPONENT_NAME}")

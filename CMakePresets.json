@@ -32,12 +32,18 @@
     {
       "inherits": "default",
       "name": "project-a",
-      "configurePreset": "project-a"
+      "configurePreset": "project-a",
+      "targets": [
+        "${presetName}/package"
+      ]
     },
     {
       "inherits": "default",
       "name": "project-b",
-      "configurePreset": "project-b"
+      "configurePreset": "project-b",
+      "targets": [
+        "${presetName}/package"
+      ]
     }
   ],
   "testPresets": [
@@ -46,11 +52,17 @@
       "configurePreset": "default",
       "configuration": "Release",
       "output": {
-        "outputOnFailure": true
+        "outputOnFailure": true,
+        "subprojectSummary": true
       },
       "execution": {
         "noTestsAction": "error",
         "stopOnFailure": false
+      },
+      "filter": {
+        "include": {
+          "name": "${presetName}."
+        }
       }
     },
     {
