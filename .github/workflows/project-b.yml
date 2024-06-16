@@ -78,7 +78,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: build-configure
+          name: configure
           path: ${{ needs.strings.outputs.build-output-dir }}
 
       - name: Build
@@ -100,6 +100,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
+          name: build
           path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Package
