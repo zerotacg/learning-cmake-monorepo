@@ -17,16 +17,20 @@ set(targets_export_name "${PROJECT_NAME}-${COMPONENT_NAME}-targets")
 
 install(FILES
         project-a/shared/shared.hpp
+        COMPONENT "${PROJECT_NAME}"
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}/${COMPONENT_NAME}
 )
 
 install(TARGETS "${COMPONENT_NAME}"
+        COMPONENT "${PROJECT_NAME}"
         EXPORT "${targets_export_name}"
 )
 
 install(EXPORT "${targets_export_name}"
+        COMPONENT "${PROJECT_NAME}"
         NAMESPACE "${project_namespace}::"
         DESTINATION "${config_install_dir}"
 )
 
 list(APPEND package_components "${COMPONENT_NAME}")
+set(package_components ${package_components} PARENT_SCOPE)

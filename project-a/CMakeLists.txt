@@ -32,6 +32,7 @@ configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake.in
 )
 
 install(FILES "${project_config}" "${version_config}"
+        COMPONENT "${PROJECT_NAME}"
         DESTINATION "${config_install_dir}"
 )
 
