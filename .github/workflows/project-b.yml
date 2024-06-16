@@ -73,7 +73,8 @@ jobs:
       - name: Install Dependency
         run: |
           mv ${{ needs.strings.outputs.build-output-dir }}/package-project-a-* ${{ needs.strings.outputs.build-output-dir }}/package-project-a
-          ${{ needs.strings.outputs.build-output-dir }}/package-project-a/project-a-*.sh --skip-license --include-subdir --prefix=${{ needs.strings.outputs.build-output-dir }}
+          mv ${{ needs.strings.outputs.build-output-dir }}/package-project-a/project-a-*.sh ${{ needs.strings.outputs.build-output-dir }}/project-a.sh
+          ${{ needs.strings.outputs.build-output-dir }}/project-a.sh --skip-license --include-subdir --prefix=${{ needs.strings.outputs.build-output-dir }}
 
       - name: Configure CMake
         run: >
