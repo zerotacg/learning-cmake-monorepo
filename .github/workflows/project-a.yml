@@ -102,5 +102,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: package-${{ needs.strings.outputs.version }}
-          path: ${{ needs.strings.outputs.build-output-dir }}/${{ env.project_name }}-*
+          path: ${{ needs.strings.outputs.build-output-dir }}/**/${{ env.project_name }}-*
 
