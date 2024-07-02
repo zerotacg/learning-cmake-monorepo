@@ -2,11 +2,20 @@
   "version": 6,
   "configurePresets": [
     {
-      "name": "subproject",
+      "name": "defaults",
       "hidden": true,
       "generator": "Ninja Multi-Config",
       "binaryDir": "${sourceDir}/build/${presetName}",
-      "installDir": "${sourceDir}/build/install",
+      "installDir": "${sourceDir}/build/install"
+    },
+    {
+      "inherits": "defaults",
+      "name": "monorepo"
+    },
+    {
+      "inherits": "defaults",
+      "name": "subproject",
+      "hidden": true,
       "cacheVariables": {
         "CPACK_PACKAGE_NAME": "${presetName}",
         "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
@@ -26,6 +35,14 @@
     }
   ],
   "buildPresets": [
+    {
+      "name": "monorepo",
+      "configurePreset": "monorepo",
+      "configuration": "Release",
+      "targets": [
+        "all"
+      ]
+    },
     {
       "name": "subproject",
       "hidden": true,
