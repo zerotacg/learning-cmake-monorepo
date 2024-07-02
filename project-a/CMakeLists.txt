@@ -17,9 +17,10 @@ set(version_config "${generated_dir}/${PROJECT_NAME}-config-version.cmake")
 set(project_config "${generated_dir}/${PROJECT_NAME}-config.cmake")
 set(package_components "")
 
-add_subdirectory(alpha)
-add_subdirectory(shared)
-add_subdirectory(special)
+add_subdirectory(app-alpha)
+add_subdirectory(lib-foo)
+add_subdirectory(lib-shared)
+add_subdirectory(lib-special)
 
 
 write_basic_package_version_file(

@@ -67,6 +67,13 @@
       "inherits": "subproject",
       "name": "project-b",
       "configurePreset": "project-b"
+    },
+    {
+      "inherits": "project-b",
+      "name": "project-b/install",
+      "targets": [
+        "${presetName}"
+      ]
     }
   ],
   "testPresets": [
@@ -166,6 +173,10 @@
         {
           "type": "package",
           "name": "project-b"
+        },
+        {
+          "type": "build",
+          "name": "project-b/install"
         }
       ]
     }

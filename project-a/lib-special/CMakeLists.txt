@@ -1,6 +1,8 @@
 set(COMPONENT_NAME "special")
 
-add_library(${COMPONENT_NAME}
+add_library(${COMPONENT_NAME})
+target_sources(${COMPONENT_NAME}
+        PRIVATE
         project-a/special/special.cpp
 )
 add_library("${project_namespace}::${COMPONENT_NAME}" ALIAS ${COMPONENT_NAME})
