@@ -12,3 +12,4 @@ Locally the project can be opened as a whole. In the pipeline project-b uses pro
 credits for inspirations and insights
 * https://youtu.be/IZXNsim9TWI?si=NgFUAIZIjChK54ri
 * https://galowicz.de/2023/01/23/mixed-cpp-monorepo-project/
+* https://blog.vito.nyc/posts/cmake-pkg/
