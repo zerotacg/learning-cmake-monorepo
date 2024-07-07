@@ -62,12 +62,9 @@ jobs:
         with:
           workflow: project-a.yml
           workflow_conclusion: success
-          branch: main
           event: push
           name: package-.*
-          # Optional, name is treated as a regular expression if set true
           name_is_regexp: true
-          # Optional, a directory where to extract artifact(s), defaults to the current directory
           path: build
 
       - name: Install Dependency
