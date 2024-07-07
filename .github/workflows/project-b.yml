@@ -19,8 +19,6 @@ on:
 
   workflow_run:
     workflows: ["Project A: Build and Package"]
-    branches:
-      - "main"
     types:
       - completed
 
@@ -56,12 +54,24 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - name: Download artifact
-        id: download-artifact
-        uses: dawidd6/action-download-artifact@v6
+      - uses: dawidd6/action-download-artifact@v6
+        id: download-from-branch
         with:
           workflow: project-a.yml
           workflow_conclusion: success
+          branch: "${{ github.ref }}"
+          event: push
+          name: package-.*
+          name_is_regexp: true
+          path: build
+          if_no_artifact_found: ignore
+
+      - uses: dawidd6/action-download-artifact@v6
+        if: ${{ ! steps.download-from-branch.found_artifact }}
+        with:
+          workflow: project-a.yml
+          workflow_conclusion: success
+          branch: "main"
           event: push
           name: package-.*
           name_is_regexp: true
