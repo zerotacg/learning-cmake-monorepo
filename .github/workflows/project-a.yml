@@ -47,6 +47,8 @@ jobs:
     steps:
       - uses: lukka/get-cmake@latest
 
+      - uses: lukka/run-vcpkg@v11.5
+
       - uses: actions/checkout@v4
 
       - name: Configure CMake
@@ -62,6 +64,8 @@ jobs:
     needs: [ strings, configure ]
     steps:
       - uses: lukka/get-cmake@latest
+
+      - uses: lukka/run-vcpkg@v11.5
 
       - uses: actions/checkout@v4
 
@@ -88,6 +92,8 @@ jobs:
 
     steps:
       - uses: lukka/get-cmake@latest
+
+      - uses: lukka/run-vcpkg@v11.5
 
       - uses: actions/checkout@v4
 
