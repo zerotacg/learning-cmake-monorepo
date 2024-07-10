@@ -10,11 +10,9 @@ set(subprojects
         CACHE STRING "Subprojects to use directly from source"
 )
 
-macro(find_package)
-    if (NOT "${ARGV0}" IN_LIST subprojects)
-        _find_package(${ARGV})
-    endif ()
-endmacro()
+foreach(subproject ${subprojects})
+    list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_BINARY_DIR}/${subproject}/generated")
+endforeach()
 
 add_subdirectory(project-a)
 add_subdirectory(project-b)

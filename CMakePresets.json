@@ -22,7 +22,16 @@
       }
     },
     {
-      "inherits": "subproject",
+      "name": "vcpkg",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+      }
+    },
+    {
+      "inherits": [
+        "vcpkg",
+        "subproject"
+      ],
       "name": "project-a"
     },
     {

@@ -1,6 +1,9 @@
 {
   "image": "mcr.microsoft.com/devcontainers/cpp:1-ubuntu-24.04",
   "features": {
+    "ghcr.io/msclock/features/vcpkg:1": {
+      "username": "ubuntu"
+    }
   },
   "containerUser": "ubuntu",
   "customizations": {

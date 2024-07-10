@@ -17,6 +17,10 @@ set(version_config "${generated_dir}/${PROJECT_NAME}-config-version.cmake")
 set(project_config "${generated_dir}/${PROJECT_NAME}-config.cmake")
 set(package_components "")
 
+find_package(Iconv QUIET)
+
+find_package(LibXml2 REQUIRED)
+
 add_subdirectory(app-alpha)
 add_subdirectory(lib-foo)
 add_subdirectory(lib-shared)
