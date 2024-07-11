@@ -48,6 +48,8 @@ jobs:
       - uses: lukka/get-cmake@latest
 
       - uses: lukka/run-vcpkg@v11.5
+        with:
+          vcpkgConfigurationJsonGlob: vcpkg-configuration.json
 
       - uses: actions/checkout@v4
 
