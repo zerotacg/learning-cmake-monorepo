@@ -5,6 +5,7 @@
       "username": "ubuntu"
     }
   },
+  remoteUser: "ubuntu",
   "containerUser": "ubuntu",
   "customizations": {
     "vscode": {
