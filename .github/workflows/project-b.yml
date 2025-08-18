@@ -22,6 +22,8 @@ on:
     types:
       - completed
 
+  workflow_dispatch:
+
 env:
   project_name: project-b
   build_type: Debug
