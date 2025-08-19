@@ -1,24 +1,21 @@
-set(COMPONENT_NAME "shared")
-
-add_library(${COMPONENT_NAME} SHARED)
-target_sources(${COMPONENT_NAME}
+add_library(project-a-shared SHARED)
+target_sources(project-a-shared
         PRIVATE
         project-a/shared/shared.cpp
 )
-target_sources(${COMPONENT_NAME}
+target_sources(project-a-shared
         PUBLIC
         FILE_SET HEADERS
         FILES
         project-a/shared/shared.hpp
 )
-add_library("${project_namespace}::${COMPONENT_NAME}" ALIAS ${COMPONENT_NAME})
-set_target_properties(${COMPONENT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${COMPONENT_NAME}")
-target_link_libraries(${COMPONENT_NAME} PUBLIC "${project_namespace}::static")
-target_link_libraries(${COMPONENT_NAME} PRIVATE LibXml2::LibXml2)
+add_project_library_alias(project-a-shared shared)
+set_target_properties(project-a-shared PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-shared")
+target_link_libraries(project-a-shared PRIVATE project-a::static LibXml2::LibXml2)
 set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
-set(targets_export_name "${PROJECT_NAME}-${COMPONENT_NAME}-targets")
+set(targets_export_name "${PROJECT_NAME}-shared-targets")
 
-install(TARGETS "${COMPONENT_NAME}"
+install(TARGETS project-a-shared
         COMPONENT "${PROJECT_NAME}"
         EXPORT "${targets_export_name}"
         FILE_SET HEADERS
@@ -30,5 +27,5 @@ install(EXPORT "${targets_export_name}"
         DESTINATION "${config_install_dir}"
 )
 
-list(APPEND package_components "${COMPONENT_NAME}")
+list(APPEND package_components "shared")
 set(package_components ${package_components} PARENT_SCOPE)

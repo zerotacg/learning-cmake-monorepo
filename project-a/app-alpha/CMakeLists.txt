@@ -1,17 +1,16 @@
-set(COMPONENT_NAME "alpha")
-
-add_executable(${COMPONENT_NAME}
+add_executable(project-a-alpha)
+target_sources(project-a-alpha
+        PRIVATE
         project-a/alpha/main.cpp
 )
-target_link_libraries(
-        ${COMPONENT_NAME}
-        PUBLIC "${project_namespace}::shared"
-        PRIVATE "${project_namespace}::static"
+target_link_libraries(project-a-alpha
+        PUBLIC project-a::shared
+        PRIVATE project-a::static
 )
-set_target_properties(${COMPONENT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${COMPONENT_NAME}")
+set_target_properties(project-a-alpha PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-alpha")
 
-install(TARGETS "${COMPONENT_NAME}"
+install(TARGETS project-a-alpha
         COMPONENT "${PROJECT_NAME}"
 )
 
-add_test(NAME "${PROJECT_NAME}.can-start" COMMAND "${COMPONENT_NAME}")
+add_test(NAME "${PROJECT_NAME}.can-start" COMMAND project-a-alpha)
