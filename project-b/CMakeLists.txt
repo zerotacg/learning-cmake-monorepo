@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 enable_testing()
 
-find_package(project-a 1.0.0 CONFIG REQUIRED COMPONENTS foo shared)
+find_package(project-a 1.0.0 CONFIG REQUIRED COMPONENTS shared)
 
 add_subdirectory(app-gamma)
 

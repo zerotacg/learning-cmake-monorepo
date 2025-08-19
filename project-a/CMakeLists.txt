@@ -9,6 +9,7 @@ enable_testing()
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
+include(../cmake/add_project_library_alias.cmake)
 
 set(project_namespace "${PROJECT_NAME}")
 set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
@@ -18,13 +19,11 @@ set(project_config "${generated_dir}/${PROJECT_NAME}-config.cmake")
 set(package_components "")
 
 find_package(Iconv QUIET)
-
 find_package(LibXml2 REQUIRED)
 
 add_subdirectory(app-alpha)
-add_subdirectory(lib-foo)
 add_subdirectory(lib-shared)
-add_subdirectory(lib-special)
+add_subdirectory(lib-static)
 
 
 write_basic_package_version_file(

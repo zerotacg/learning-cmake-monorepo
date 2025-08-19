@@ -9,6 +9,20 @@ it's dependency got build.
 
 Locally the project can be opened as a whole. In the pipeline project-b uses project-a from it's artifacts
 
+## Usage
+
+project-a workflow
+```bash
+cmake --workflow --preset project-a
+```
+
+project-b workflow
+```bash
+cmake --workflow --preset project-b
+```
+
+## Credits
+
 credits for inspirations and insights
 * https://youtu.be/IZXNsim9TWI?si=NgFUAIZIjChK54ri
 * https://galowicz.de/2023/01/23/mixed-cpp-monorepo-project/

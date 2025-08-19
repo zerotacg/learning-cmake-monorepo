@@ -6,7 +6,7 @@ add_executable(${COMPONENT_NAME}
 target_link_libraries(
         ${COMPONENT_NAME}
         PUBLIC "${project_namespace}::shared"
-        PRIVATE "${project_namespace}::special"
+        PRIVATE "${project_namespace}::static"
 )
 set_target_properties(${COMPONENT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${COMPONENT_NAME}")
 
