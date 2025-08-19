@@ -12,7 +12,7 @@ target_sources(${COMPONENT_NAME}
 add_library("${project_namespace}::${COMPONENT_NAME}" ALIAS ${COMPONENT_NAME})
 set_target_properties(${COMPONENT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${COMPONENT_NAME}")
 
-set(targets_export_name "${PROJECT_NAME}-${COMPONENT_NAME}-targets")
+set(targets_export_name "${PROJECT_NAME}-foo-targets")
 install(TARGETS "${COMPONENT_NAME}"
         COMPONENT "${PROJECT_NAME}"
         EXPORT "${targets_export_name}"
