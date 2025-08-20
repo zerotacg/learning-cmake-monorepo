@@ -32,3 +32,6 @@ credits for inspirations and insights
 * https://youtu.be/IZXNsim9TWI?si=NgFUAIZIjChK54ri
 * https://galowicz.de/2023/01/23/mixed-cpp-monorepo-project/
 * https://blog.vito.nyc/posts/cmake-pkg/
+
+## TODO
+ - [ ] add transitive dependency example as vcpkg fmt is static build and not really a dependency to project-b 
