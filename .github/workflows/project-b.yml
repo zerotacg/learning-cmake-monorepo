@@ -103,9 +103,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ strings, configure ]
     steps:
+      - uses: actions/checkout@v4
+
       - uses: lukka/get-cmake@latest
 
-      - uses: actions/checkout@v4
+      - uses: lukka/run-vcpkg@v11.5
 
       - uses: actions/download-artifact@v4
         with:
@@ -129,9 +131,11 @@ jobs:
     needs: [ strings, build ]
 
     steps:
+      - uses: actions/checkout@v4
+
       - uses: lukka/get-cmake@latest
 
-      - uses: actions/checkout@v4
+      - uses: lukka/run-vcpkg@v11.5
 
       - uses: actions/download-artifact@v4
         with:
