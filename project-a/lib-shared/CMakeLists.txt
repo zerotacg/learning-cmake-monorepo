@@ -11,7 +11,10 @@ target_sources(project-a-shared
 )
 add_project_library_alias(project-a-shared shared)
 set_target_properties(project-a-shared PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-shared")
-target_link_libraries(project-a-shared PRIVATE project-a::static LibXml2::LibXml2)
+target_link_libraries(project-a-shared
+        PUBLIC fmt::fmt
+        PRIVATE project-a::static
+)
 set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
 set(targets_export_name "${PROJECT_NAME}-shared-targets")
 

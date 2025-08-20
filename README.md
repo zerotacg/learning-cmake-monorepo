@@ -11,6 +11,11 @@ Locally the project can be opened as a whole. In the pipeline project-b uses pro
 
 ## Usage
 
+complete monorepo
+```bash
+cmake --workflow --preset monorepo
+```
+
 project-a workflow
 ```bash
 cmake --workflow --preset project-a

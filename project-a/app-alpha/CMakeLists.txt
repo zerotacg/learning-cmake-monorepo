@@ -5,7 +5,9 @@ target_sources(project-a-alpha
 )
 target_link_libraries(project-a-alpha
         PUBLIC project-a::shared
-        PRIVATE project-a::static
+        PRIVATE
+        project-a::static
+        fmt::fmt
 )
 set_target_properties(project-a-alpha PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-alpha")
 

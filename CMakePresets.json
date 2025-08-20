@@ -9,12 +9,15 @@
       "installDir": "${sourceDir}/build/install"
     },
     {
-      "inherits": "defaults",
-      "name": "monorepo"
+      "name": "monorepo",
+      "inherits": [
+        "vcpkg",
+        "defaults"
+      ]
     },
     {
-      "inherits": "defaults",
       "name": "subproject",
+      "inherits": "defaults",
       "hidden": true,
       "cacheVariables": {
         "CPACK_PACKAGE_NAME": "${presetName}",
@@ -23,20 +26,24 @@
     },
     {
       "name": "vcpkg",
+      "hidden": true,
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
       }
     },
     {
+      "name": "project-a",
+      "inherits": [
+        "vcpkg",
+        "subproject"
+      ]
+    },
+    {
+      "name": "project-b",
       "inherits": [
         "vcpkg",
         "subproject"
       ],
-      "name": "project-a"
-    },
-    {
-      "inherits": "subproject",
-      "name": "project-b",
       "cacheVariables": {
         "CPACK_PACKAGE_NAME": "${presetName}",
         "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
@@ -50,6 +57,13 @@
       "configuration": "Release",
       "targets": [
         "all"
+      ]
+    },
+    {
+      "name": "monorepo/install",
+      "inherits": "monorepo",
+      "targets": [
+        "install"
       ]
     },
     {
@@ -87,7 +101,7 @@
   ],
   "testPresets": [
     {
-      "name": "subproject",
+      "name": "default",
       "hidden": true,
       "configuration": "Release",
       "output": {
@@ -97,7 +111,12 @@
       "execution": {
         "noTestsAction": "error",
         "stopOnFailure": false
-      },
+      }
+    },
+    {
+      "name": "subproject",
+      "inherits": "default",
+      "hidden": true,
       "filter": {
         "include": {
           "name": "${presetName}."
@@ -105,13 +124,18 @@
       }
     },
     {
-      "inherits": "subproject",
+      "name": "monorepo",
+      "inherits": "default",
+      "configurePreset": "monorepo"
+    },
+    {
       "name": "project-a",
+      "inherits": "subproject",
       "configurePreset": "project-a"
     },
     {
-      "inherits": "subproject",
       "name": "project-b",
+      "inherits": "subproject",
       "configurePreset": "project-b"
     }
   ],
@@ -128,17 +152,47 @@
       ]
     },
     {
+      "name": "monorepo",
       "inherits": "subproject",
+      "configurePreset": "monorepo"
+    },
+    {
       "name": "project-a",
+      "inherits": "subproject",
       "configurePreset": "project-a"
     },
     {
-      "inherits": "subproject",
       "name": "project-b",
+      "inherits": "subproject",
       "configurePreset": "project-b"
     }
   ],
   "workflowPresets": [
+    {
+      "name": "monorepo",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "monorepo"
+        },
+        {
+          "type": "build",
+          "name": "monorepo"
+        },
+        {
+          "type": "test",
+          "name": "monorepo"
+        },
+        {
+          "type": "package",
+          "name": "monorepo"
+        },
+        {
+          "type": "build",
+          "name": "monorepo/install"
+        }
+      ]
+    },
     {
       "name": "project-a",
       "steps": [
