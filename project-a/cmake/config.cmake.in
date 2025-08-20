@@ -14,4 +14,7 @@ foreach(_comp ${@PROJECT_NAME@_FIND_COMPONENTS})
     set(@PROJECT_NAME@_${_comp}_FOUND True)
 endforeach()
 
+include(CMakeFindDependencyMacro)
+find_dependency(fmt REQUIRED)
+
 check_required_components(@PROJECT_NAME@)
