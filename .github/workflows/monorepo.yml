@@ -106,6 +106,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: project-b-${{ needs.strings.outputs.build-version }}
-          path: ${{ needs.strings.outputs.build-dir }}/prject-b/prject-b-*
+          path: ${{ needs.strings.outputs.build-dir }}/project-b/project-b-*
           if-no-files-found: error
 
