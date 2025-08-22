@@ -20,10 +20,19 @@ project-a workflow
 ```bash
 cmake --workflow --preset project-a
 ```
+install project-a from package
+```bash
+build/project-a/project-a-1.0.0-Linux.sh --include-subdir --skip-license --prefix=build/install
+```
 
 project-b workflow
 ```bash
 cmake --workflow --preset project-b
+```
+
+configure project-b using install of project-a
+```bash
+cmake --preset project-b -DWITH_project-a:BOOLEAN=OFF
 ```
 
 ## Credits

@@ -4,18 +4,18 @@ project(monorepo VERSION 1.0.0)
 
 enable_testing()
 
-option(WITH_project_a "Enable project-a" ON)
-option(WITH_project_b "Enable project-b" ON)
+option(WITH_project-a "Enable project-a" ON)
+option(WITH_project-b "Enable project-b" ON)
 
 set(subprojects
         project-a
         project-b
-        CACHE STRING "Subprojects to use directly from source"
 )
 
 foreach(subproject ${subprojects})
-    list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_BINARY_DIR}/${subproject}/generated")
+    if(WITH_${subproject})
+        message("adding sub project '${subproject}'")
+        list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_BINARY_DIR}/${subproject}/generated")
+        add_subdirectory(${subproject})
+    endif ()
 endforeach()
-
-add_subdirectory(project-a)
-add_subdirectory(project-b)
