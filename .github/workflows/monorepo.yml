@@ -60,7 +60,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: project-a-${{ needs.strings.outputs.build-version }}
-          path: ${{ needs.strings.outputs.build-dir }}/prject-a/prject-a-*
+          path: ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
 
   project-b:
     needs: [ strings, project-a ]
