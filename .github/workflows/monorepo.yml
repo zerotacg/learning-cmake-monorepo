@@ -61,6 +61,7 @@ jobs:
         with:
           name: project-a-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
+          if-no-files-found: error
 
   project-b:
     needs: [ strings, project-a ]
@@ -75,8 +76,10 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           pattern: project-a-*
-          merge-multiple: true
           path: ${{ needs.strings.outputs.build-dir }}
+
+      - name: Install Dependency
+        run: find ${{ needs.strings.outputs.build-dir }}
 
       - name: Install Dependency
         run: >
@@ -104,4 +107,5 @@ jobs:
         with:
           name: project-b-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-dir }}/prject-b/prject-b-*
+          if-no-files-found: error
 
