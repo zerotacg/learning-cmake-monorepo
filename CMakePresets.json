@@ -35,7 +35,6 @@
       "name": "ci",
       "hidden": true,
       "cacheVariables": {
-        "subprojects": "",
         "CMAKE_PREFIX_PATH": "${sourceDir}/build/install"
       }
     },
@@ -69,7 +68,10 @@
       "inherits": [
         "project-b",
         "ci"
-      ]
+      ],
+      "cacheVariables": {
+        "subprojects": ""
+      }
     }
   ],
   "buildPresets": [

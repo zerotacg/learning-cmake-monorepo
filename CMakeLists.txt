@@ -4,6 +4,9 @@ project(monorepo VERSION 1.0.0)
 
 enable_testing()
 
+option(WITH_project_a "Enable project-a" ON)
+option(WITH_project_b "Enable project-b" ON)
+
 set(subprojects
         project-a
         project-b
