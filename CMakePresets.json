@@ -61,7 +61,8 @@
       "inherits": [
         "project-a",
         "ci"
-      ]
+      ],
+      "binaryDir": "${sourceDir}/build/project-a"
     },
     {
       "name": "ci-project-b",
@@ -69,6 +70,7 @@
         "project-b",
         "ci"
       ],
+      "binaryDir": "${sourceDir}/build/project-b",
       "cacheVariables": {
         "subprojects": ""
       }
