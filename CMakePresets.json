@@ -32,6 +32,14 @@
       }
     },
     {
+      "name": "ci",
+      "hidden": true,
+      "cacheVariables": {
+        "subprojects": "",
+        "CMAKE_PREFIX_PATH": "${sourceDir}/build/install"
+      }
+    },
+    {
       "name": "project-a",
       "inherits": [
         "vcpkg",
@@ -48,6 +56,20 @@
         "CPACK_PACKAGE_NAME": "${presetName}",
         "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
       }
+    },
+    {
+      "name": "ci-project-a",
+      "inherits": [
+        "project-a",
+        "ci"
+      ]
+    },
+    {
+      "name": "ci-project-b",
+      "inherits": [
+        "project-b",
+        "ci"
+      ]
     }
   ],
   "buildPresets": [
