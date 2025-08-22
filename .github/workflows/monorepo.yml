@@ -46,7 +46,7 @@ jobs:
       - uses: lukka/run-vcpkg@v11.5
 
       - name: Configure CMake
-        run: cmake --preset ci-project-a
+        run: cmake --preset project-a
 
       - name: Build
         run: cmake --build --preset project-a
@@ -86,7 +86,10 @@ jobs:
           --prefix=${{ needs.strings.outputs.install-dir }}
 
       - name: Configure CMake
-        run: cmake --preset ci-project-b
+        run: >
+          cmake --preset ${{ env.project_name }}
+          -Dsubprojects=""
+          -DCMAKE_PREFIX_PATH=$(realpath build/project-a-*)
 
       - name: Build
         run: cmake --build --preset project-b
