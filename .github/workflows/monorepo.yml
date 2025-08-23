@@ -38,23 +38,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            project-a:
+              - 'project-a/**'
+
       - uses: lukka/get-cmake@latest
+        if: steps.filter.outputs.project-a == 'true'
 
       - uses: lukka/run-vcpkg@v11.5
+        if: steps.filter.outputs.project-a == 'true'
 
       - name: Configure CMake
+        if: steps.filter.outputs.project-a == 'true'
         run: cmake --preset project-a -Dsubprojects:STRING="project-a"
 
       - name: Build
+        if: steps.filter.outputs.project-a == 'true'
         run: cmake --build --preset project-a
 
       - name: Test
+        if: steps.filter.outputs.project-a == 'true'
         run: ctest --preset project-a
 
       - name: Package
+        if: steps.filter.outputs.project-a == 'true'
         run: cpack --preset project-a -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
+        if: steps.filter.outputs.project-a == 'true'
         with:
           name: project-a-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
