@@ -42,7 +42,8 @@ jobs:
         with:
           key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
           lookup-only: true
-          path: "dummy"
+          path: |
+            ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
 
       - uses: actions/cache/restore@v4
         id: project-b
