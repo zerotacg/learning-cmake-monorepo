@@ -43,7 +43,7 @@ jobs:
           COMMIT_HASH=${{ github.sha }}
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          [ "$VERSION" == "main" ] && VERSION=latest
+          [ "$VERSION" == "${{ github.event.repository.default_branch }}" ] && VERSION=latest
           VERSION="$VERSION+sha.${COMMIT_HASH:0:8}"
           echo VERSION=$VERSION
           echo "build-version=${VERSION}" >> "$GITHUB_OUTPUT"

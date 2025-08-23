@@ -84,10 +84,29 @@ jobs:
 
       - uses: lukka/run-vcpkg@v11.5
 
-      - uses: actions/download-artifact@v4
+      - uses: dawidd6/action-download-artifact@v6
+        id: download-from-branch
         with:
-          pattern: project-a-*
+          workflow: monorepo.yml
+          workflow_conclusion: success
+          branch: "${{ github.ref }}"
+          event: push
+          name: project-a-*
+          name_is_regexp: true
           path: ${{ needs.strings.outputs.build-dir }}
+          if_no_artifact_found: ignore
+
+      - uses: dawidd6/action-download-artifact@v6
+        if: ${{ steps.download-from-branch.outputs.found_artifact != 'true' }}
+        with:
+          workflow: monorepo.yml
+          workflow_conclusion: success
+          branch: "${{ github.event.repository.default_branch }}"
+          event: push
+          name: project-a-*
+          name_is_regexp: true
+          path: ${{ needs.strings.outputs.build-dir }}
+
 
       - name: Install Dependency
         run: >
