@@ -1,0 +1,67 @@
+{
+  "version": 6,
+  "include": [
+    "../cmake/CMakePresets.base.json"
+  ],
+  "configurePresets": [
+    {
+      "name": "project-a",
+      "inherits": [
+        "vcpkg",
+        "subproject"
+      ]
+    }
+  ],
+  "buildPresets": [
+    {
+      "inherits": "subproject",
+      "name": "project-a/all",
+      "configurePreset": "project-a"
+    },
+    {
+      "inherits": "project-a/all",
+      "name": "project-a/install"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "project-a",
+      "inherits": "subproject",
+      "configurePreset": "project-a"
+    }
+  ],
+  "packagePresets": [
+    {
+      "name": "project-a",
+      "inherits": "subproject",
+      "configurePreset": "project-a"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "project-a",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "project-a"
+        },
+        {
+          "type": "build",
+          "name": "project-a/all"
+        },
+        {
+          "type": "test",
+          "name": "project-a"
+        },
+        {
+          "type": "package",
+          "name": "project-a"
+        },
+        {
+          "type": "build",
+          "name": "project-a/install"
+        }
+      ]
+    }
+  ]
+}
