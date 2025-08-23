@@ -36,7 +36,7 @@ jobs:
     needs: [ strings ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@latest
+      - uses: actions/checkout@v5
 
       - uses: lukka/get-cmake@latest
 
@@ -75,7 +75,7 @@ jobs:
     needs: [ strings, project-a ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@latest
+      - uses: actions/checkout@@v5
 
       - uses: lukka/get-cmake@latest
 
