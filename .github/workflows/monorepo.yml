@@ -36,28 +36,33 @@ jobs:
     needs: [ strings ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@latest
 
       - uses: lukka/get-cmake@latest
 
       - uses: lukka/run-vcpkg@v11.5
 
       - uses: actions/cache@v4
+        id: cache
         with:
           key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
           path: |
             ${{ needs.strings.outputs.build-dir }}
 
       - name: Configure CMake
+        if: steps.cache.outputs.cache-hit != 'true'
         run: cmake --preset project-a -Dsubprojects:STRING="project-a"
 
       - name: Build
+        if: steps.cache.outputs.cache-hit != 'true'
         run: cmake --build --preset project-a
 
       - name: Test
+        if: steps.cache.outputs.cache-hit != 'true'
         run: ctest --preset project-a
 
       - name: Package
+        if: steps.cache.outputs.cache-hit != 'true'
         run: cpack --preset project-a -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
@@ -70,7 +75,7 @@ jobs:
     needs: [ strings, project-a ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@latest
 
       - uses: lukka/get-cmake@latest
 
