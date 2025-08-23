@@ -9,5 +9,5 @@ int main() {
     shared::helloWorld();
     fmt::print(fg(fmt::color::indian_red) | fmt::emphasis::bold,"alpha: ");
     special::helloWorld();
-    return 1;
+    return 0;
 }
