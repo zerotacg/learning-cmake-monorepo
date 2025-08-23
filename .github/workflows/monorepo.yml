@@ -80,16 +80,27 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          key: ${{ runner.os }}-project-b-${{ hashFiles('project-a/**', 'project-b/**') }}
+          path: |
+            ${{ needs.strings.outputs.build-dir }}/project-b/project-b-*
+
       - uses: lukka/get-cmake@latest
+        if: steps.cache.outputs.cache-hit != 'true'
 
       - uses: lukka/run-vcpkg@v11.5
+        if: steps.cache.outputs.cache-hit != 'true'
 
       - uses: actions/download-artifact@v4
+        if: steps.cache.outputs.cache-hit != 'true'
         with:
           pattern: project-a-*
           path: ${{ needs.strings.outputs.build-dir }}
 
       - name: Install Dependency
+        if: steps.cache.outputs.cache-hit != 'true'
         run: >
           sh ${{ needs.strings.outputs.build-dir }}/project-a-*/project-a-*.sh
           --skip-license
@@ -97,15 +108,19 @@ jobs:
           --prefix=${{ needs.strings.outputs.install-dir }}
 
       - name: Configure CMake
+        if: steps.cache.outputs.cache-hit != 'true'
         run: cmake --preset project-b
 
       - name: Build
+        if: steps.cache.outputs.cache-hit != 'true'
         run: cmake --build --preset project-b
 
       - name: Test
+        if: steps.cache.outputs.cache-hit != 'true'
         run: ctest --preset project-b
 
       - name: Package
+        if: steps.cache.outputs.cache-hit != 'true'
         run: cpack --preset project-b -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
@@ -121,16 +136,27 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          key: ${{ runner.os }}-project-c-${{ hashFiles('project-a/**', 'project-c/**') }}
+          path: |
+            ${{ needs.strings.outputs.build-dir }}/project-c/project-c-*
+
       - uses: lukka/get-cmake@latest
+        if: steps.cache.outputs.cache-hit != 'true'
 
       - uses: lukka/run-vcpkg@v11.5
+        if: steps.cache.outputs.cache-hit != 'true'
 
       - uses: actions/download-artifact@v4
+        if: steps.cache.outputs.cache-hit != 'true'
         with:
           pattern: project-a-*
           path: ${{ needs.strings.outputs.build-dir }}
 
       - name: Install Dependency
+        if: steps.cache.outputs.cache-hit != 'true'
         run: >
           sh ${{ needs.strings.outputs.build-dir }}/project-a-*/project-a-*.sh
           --skip-license
@@ -138,15 +164,19 @@ jobs:
           --prefix=${{ needs.strings.outputs.install-dir }}
 
       - name: Configure CMake
+        if: steps.cache.outputs.cache-hit != 'true'
         run: cmake --preset project-c
 
       - name: Build
+        if: steps.cache.outputs.cache-hit != 'true'
         run: cmake --build --preset project-c
 
       - name: Test
+        if: steps.cache.outputs.cache-hit != 'true'
         run: ctest --preset project-c
 
       - name: Package
+        if: steps.cache.outputs.cache-hit != 'true'
         run: cpack --preset project-c -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
