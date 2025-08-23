@@ -107,11 +107,12 @@ jobs:
       - uses: lukka/run-vcpkg@v11.5
 
       - uses: actions/cache/restore@v4
-        id: cache
         with:
           key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
           path: ${{ needs.strings.outputs.build-dir }}
+
       - run: find ${{ needs.strings.outputs.build-dir }}
+
       - name: Install Dependency
         run: >
           sh ${{ needs.strings.outputs.build-dir }}/project-a-*/project-a-*.sh
@@ -156,7 +157,6 @@ jobs:
       - uses: lukka/run-vcpkg@v11.5
 
       - uses: actions/cache/restore@v4
-        id: cache
         with:
           key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
           path: |
