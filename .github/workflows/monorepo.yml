@@ -35,6 +35,8 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
+
       - uses: actions/cache/restore@v4
         id: project-a
         with:
