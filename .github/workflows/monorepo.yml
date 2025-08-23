@@ -40,6 +40,7 @@ jobs:
         with:
           key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
           lookup-only: true
+          path: ""
 
   project-a:
     needs: [ strings ]
