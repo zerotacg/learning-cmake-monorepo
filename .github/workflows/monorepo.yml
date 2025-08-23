@@ -62,7 +62,6 @@ jobs:
         run: ctest --preset project-a
 
       - name: Package
-        if: steps.cache.outputs.cache-hit != 'true'
         run: cpack --preset project-a -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
