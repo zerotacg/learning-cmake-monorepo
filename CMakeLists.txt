@@ -7,6 +7,7 @@ enable_testing()
 set(subprojects
         project-a
         project-b
+        project-c
         CACHE STRING "Subprojects to use directly from source"
 )
 

@@ -38,20 +38,22 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: lukka/get-cmake@latest
-
-      - uses: lukka/run-vcpkg@v11.5
-
       - uses: actions/cache@v4
         id: cache
         with:
           key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
           path: |
-            ${{ needs.strings.outputs.build-dir }}
+            ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
+
+      - uses: lukka/get-cmake@latest
+        if: steps.cache.outputs.cache-hit != 'true'
+
+      - uses: lukka/run-vcpkg@v11.5
+        if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Configure CMake
         if: steps.cache.outputs.cache-hit != 'true'
-        run: cmake --preset project-a -Dsubprojects:STRING="project-a"
+        run: cmake --preset project-a
 
       - name: Build
         if: steps.cache.outputs.cache-hit != 'true'
@@ -62,6 +64,7 @@ jobs:
         run: ctest --preset project-a
 
       - name: Package
+        if: steps.cache.outputs.cache-hit != 'true'
         run: cpack --preset project-a -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
@@ -70,7 +73,49 @@ jobs:
           path: ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
           if-no-files-found: error
 
+
   project-b:
+    needs: [ strings, project-a ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: lukka/get-cmake@latest
+
+      - uses: lukka/run-vcpkg@v11.5
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: project-a-*
+          path: ${{ needs.strings.outputs.build-dir }}
+
+      - name: Install Dependency
+        run: >
+          sh ${{ needs.strings.outputs.build-dir }}/project-a-*/project-a-*.sh
+          --skip-license
+          --include-subdir
+          --prefix=${{ needs.strings.outputs.install-dir }}
+
+      - name: Configure CMake
+        run: cmake --preset project-b -Dsubprojects:STRING="project-b"
+
+      - name: Build
+        run: cmake --build --preset project-b
+
+      - name: Test
+        run: ctest --preset project-b
+
+      - name: Package
+        run: cpack --preset project-b -R "${{ needs.strings.outputs.build-version }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: project-b-${{ needs.strings.outputs.build-version }}
+          path: ${{ needs.strings.outputs.build-dir }}/project-b/project-b-*
+          if-no-files-found: error
+
+
+  project-c:
     needs: [ strings, project-a ]
     runs-on: ubuntu-latest
     steps:

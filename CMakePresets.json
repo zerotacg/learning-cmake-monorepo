@@ -20,6 +20,7 @@
       "inherits": "defaults",
       "hidden": true,
       "cacheVariables": {
+        "subprojects": "${presetName}",
         "CPACK_PACKAGE_NAME": "${presetName}",
         "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
       }
@@ -43,11 +44,14 @@
       "inherits": [
         "vcpkg",
         "subproject"
-      ],
-      "cacheVariables": {
-        "CPACK_PACKAGE_NAME": "${presetName}",
-        "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
-      }
+      ]
+    },
+    {
+      "name": "project-c",
+      "inherits": [
+        "vcpkg",
+        "subproject"
+      ]
     }
   ],
   "buildPresets": [
@@ -97,6 +101,18 @@
       "targets": [
         "${presetName}"
       ]
+    },
+    {
+      "inherits": "subproject",
+      "name": "project-c",
+      "configurePreset": "project-c"
+    },
+    {
+      "inherits": "project-c",
+      "name": "project-c/install",
+      "targets": [
+        "${presetName}"
+      ]
     }
   ],
   "testPresets": [
@@ -137,6 +153,11 @@
       "name": "project-b",
       "inherits": "subproject",
       "configurePreset": "project-b"
+    },
+    {
+      "name": "project-c",
+      "inherits": "subproject",
+      "configurePreset": "project-c"
     }
   ],
   "packagePresets": [
@@ -165,6 +186,11 @@
       "name": "project-b",
       "inherits": "subproject",
       "configurePreset": "project-b"
+    },
+    {
+      "name": "project-c",
+      "inherits": "subproject",
+      "configurePreset": "project-c"
     }
   ],
   "workflowPresets": [
@@ -240,6 +266,31 @@
         {
           "type": "build",
           "name": "project-b/install"
+        }
+      ]
+    },
+    {
+      "name": "project-c",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "project-c"
+        },
+        {
+          "type": "build",
+          "name": "project-c"
+        },
+        {
+          "type": "test",
+          "name": "project-c"
+        },
+        {
+          "type": "package",
+          "name": "project-c"
+        },
+        {
+          "type": "build",
+          "name": "project-c/install"
         }
       ]
     }

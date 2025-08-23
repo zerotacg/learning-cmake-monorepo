@@ -30,10 +30,11 @@ project-b workflow
 cmake --workflow --preset project-b
 ```
 
-configure project-b using install of project-a
+project-c workflow
 ```bash
-cmake --preset project-b -Dsubprojects:STRING="project-b"
+cmake --workflow --preset project-c
 ```
+
 
 ## Credits
 
