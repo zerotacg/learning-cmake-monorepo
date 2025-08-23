@@ -110,9 +110,8 @@ jobs:
         id: cache
         with:
           key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
-          path: |
-            ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
-
+          path: ${{ needs.strings.outputs.build-dir }}
+      - run: find ${{ needs.strings.outputs.build-dir }}
       - name: Install Dependency
         run: >
           sh ${{ needs.strings.outputs.build-dir }}/project-a-*/project-a-*.sh
