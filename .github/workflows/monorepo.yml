@@ -76,9 +76,6 @@ jobs:
           path: ${{ needs.strings.outputs.build-dir }}
 
       - name: Install Dependency
-        run: find ${{ needs.strings.outputs.build-dir }}
-
-      - name: Install Dependency
         run: >
           sh ${{ needs.strings.outputs.build-dir }}/project-a-*/project-a-*.sh
           --skip-license
