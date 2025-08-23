@@ -2,7 +2,7 @@ name: "All: Build and Package"
 
 on:
   push:
-    branches: [ "feature/*" ]
+    branches: [ "main", "feature/*" ]
 
   pull_request:
     branches: [ "main" ]
@@ -38,38 +38,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dorny/paths-filter@v3
-        id: changes
+      - id: changes
+        uses: kt-actions/has-changes-since-last-success@v1
         with:
-          base: ${{ github.event.repository.default_branch }}
-          filters: |
-            project-a:
-              - 'project-a/**'
+          no-dot-github: true
+          paths: |
+            project-a
 
       - uses: lukka/get-cmake@latest
-        if: steps.changes.outputs.project-a == 'true'
+        if: steps.changes.outputs.has-changes == 'true'
 
       - uses: lukka/run-vcpkg@v11.5
-        if: steps.changes.outputs.project-a == 'true'
+        if: steps.changes.outputs.has-changes == 'true'
 
       - name: Configure CMake
-        if: steps.changes.outputs.project-a == 'true'
+        if: steps.changes.outputs.has-changes == 'true'
         run: cmake --preset project-a -Dsubprojects:STRING="project-a"
 
       - name: Build
-        if: steps.changes.outputs.project-a == 'true'
+        if: steps.changes.outputs.has-changes == 'true'
         run: cmake --build --preset project-a
 
       - name: Test
-        if: steps.changes.outputs.project-a == 'true'
+        if: steps.changes.outputs.has-changes == 'true'
         run: ctest --preset project-a
 
       - name: Package
-        if: steps.changes.outputs.project-a == 'true'
+        if: steps.changes.outputs.has-changes == 'true'
         run: cpack --preset project-a -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
-        if: steps.changes.outputs.project-a == 'true'
+        if: steps.changes.outputs.has-changes == 'true'
         with:
           name: project-a-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
