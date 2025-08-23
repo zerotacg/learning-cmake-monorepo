@@ -97,7 +97,7 @@ jobs:
           --prefix=${{ needs.strings.outputs.install-dir }}
 
       - name: Configure CMake
-        run: cmake --preset project-b -Dsubprojects:STRING="project-b"
+        run: cmake --preset project-b
 
       - name: Build
         run: cmake --build --preset project-b
@@ -138,20 +138,20 @@ jobs:
           --prefix=${{ needs.strings.outputs.install-dir }}
 
       - name: Configure CMake
-        run: cmake --preset project-b -Dsubprojects:STRING="project-b"
+        run: cmake --preset project-c
 
       - name: Build
-        run: cmake --build --preset project-b
+        run: cmake --build --preset project-c
 
       - name: Test
-        run: ctest --preset project-b
+        run: ctest --preset project-c
 
       - name: Package
-        run: cpack --preset project-b -R "${{ needs.strings.outputs.build-version }}"
+        run: cpack --preset project-c -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: project-b-${{ needs.strings.outputs.build-version }}
-          path: ${{ needs.strings.outputs.build-dir }}/project-b/project-b-*
+          name: project-c-${{ needs.strings.outputs.build-version }}
+          path: ${{ needs.strings.outputs.build-dir }}/project-c/project-c-*
           if-no-files-found: error
 
