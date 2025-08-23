@@ -5,8 +5,8 @@
       "name": "defaults",
       "hidden": true,
       "generator": "Ninja Multi-Config",
-      "binaryDir": "${sourceDir}/build/${presetName}",
-      "installDir": "${sourceDir}/build/install"
+      "binaryDir": "build/${presetName}",
+      "installDir": "build/install/${presetName}"
     },
     {
       "name": "monorepo",
@@ -21,6 +21,7 @@
       "hidden": true,
       "cacheVariables": {
         "subprojects": "${presetName}",
+        "CMAKE_PREFIX_PATH": "${sourceDir}/build/install",
         "CPACK_PACKAGE_NAME": "${presetName}",
         "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
       }
