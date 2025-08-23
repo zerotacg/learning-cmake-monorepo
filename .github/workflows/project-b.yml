@@ -17,11 +17,6 @@ on:
       - CMakeLists.txt
       - CMakePresets.txt
 
-  workflow_run:
-    workflows: ["Project A: Build and Package"]
-    types:
-      - completed
-
   workflow_dispatch:
 
 env:

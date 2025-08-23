@@ -16,6 +16,7 @@ on:
       - project-a/**
       - CMakeLists.txt
       - CMakePresets.txt
+
   workflow_dispatch:
 
 env:
