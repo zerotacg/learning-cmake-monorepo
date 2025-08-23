@@ -2,10 +2,10 @@ name: "All: Build and Package"
 
 on:
   push:
-    branches: [ "main", "feature/*" ]
+    branches: [ "feature/*" ]
 
   pull_request:
-    branches: [ "main" ]
+    branches: [ "${{ github.event.repository.default_branch }}" ]
 
   workflow_dispatch:
 
@@ -41,6 +41,7 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: changes
         with:
+          base: ${{ github.event.repository.default_branch }}
           filters: |
             project-a:
               - 'project-a/**'
@@ -84,19 +85,17 @@ jobs:
 
       - uses: lukka/run-vcpkg@v11.5
 
-      - uses: dawidd6/action-download-artifact@v6
+      - uses: dawidd6/action-download-artifact@v11
         id: download-from-branch
         with:
-          workflow: monorepo.yml
-          workflow_conclusion: success
-          branch: "${{ github.ref }}"
+          ref: "${{ github.ref }}"
           event: push
           name: project-a-*
           name_is_regexp: true
           path: ${{ needs.strings.outputs.build-dir }}
           if_no_artifact_found: ignore
 
-      - uses: dawidd6/action-download-artifact@v6
+      - uses: dawidd6/action-download-artifact@v11
         if: ${{ steps.download-from-branch.outputs.found_artifact != 'true' }}
         with:
           workflow: monorepo.yml
