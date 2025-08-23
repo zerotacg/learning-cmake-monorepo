@@ -1,8 +1,8 @@
-#include <iostream>
 #include <project-a/shared/shared.hpp>
+#include <fmt/color.h>
 
 int main() {
-    std::cout << "gamma: ";
+    fmt::print(fg(fmt::color::aquamarine) | fmt::emphasis::bold,"gamma: ");
     project_a::shared::helloWorld();
     return 0;
 }
