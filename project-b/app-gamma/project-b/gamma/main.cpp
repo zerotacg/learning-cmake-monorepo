@@ -4,5 +4,5 @@
 int main() {
     std::cout << "gamma: ";
     project_a::shared::helloWorld();
-    return 1;
+    return 0;
 }
