@@ -38,37 +38,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - id: changes
-        uses: kt-actions/has-changes-since-last-success@v1
-        with:
-          no-dot-github: true
-          paths: |
-            project-a
-
       - uses: lukka/get-cmake@latest
-        if: steps.changes.outputs.has-changes == 'true'
 
       - uses: lukka/run-vcpkg@v11.5
-        if: steps.changes.outputs.has-changes == 'true'
+
+      - uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
+          path: |
+            ${{ needs.strings.outputs.build-dir }}
 
       - name: Configure CMake
-        if: steps.changes.outputs.has-changes == 'true'
         run: cmake --preset project-a -Dsubprojects:STRING="project-a"
 
       - name: Build
-        if: steps.changes.outputs.has-changes == 'true'
         run: cmake --build --preset project-a
 
       - name: Test
-        if: steps.changes.outputs.has-changes == 'true'
         run: ctest --preset project-a
 
       - name: Package
-        if: steps.changes.outputs.has-changes == 'true'
         run: cpack --preset project-a -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
-        if: steps.changes.outputs.has-changes == 'true'
         with:
           name: project-a-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
