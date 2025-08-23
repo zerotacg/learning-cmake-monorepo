@@ -32,6 +32,15 @@ jobs:
           echo VERSION=$VERSION
           echo "build-version=${VERSION}" >> "$GITHUB_OUTPUT"
 
+  changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache/restore@v4
+        id: project-a
+        with:
+          key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
+          lookup-only: true
+
   project-a:
     needs: [ strings ]
     runs-on: ubuntu-latest
