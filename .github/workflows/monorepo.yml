@@ -44,40 +44,49 @@ jobs:
           lookup-only: true
           path: "dummy"
 
+      - uses: actions/cache/restore@v4
+        id: project-b
+        with:
+          key: ${{ runner.os }}-project-b-${{ hashFiles('project-a/**', 'project-b/**') }}
+          lookup-only: true
+          path: "dummy"
+
+      - uses: actions/cache/restore@v4
+        id: project-c
+        with:
+          key: ${{ runner.os }}-project-c-${{ hashFiles('project-a/**', 'project-c/**') }}
+          lookup-only: true
+          path: "dummy"
+
+
   project-a:
-    needs: [ strings ]
+    needs: [ strings, changes ]
+    if: needs.changes.steps.project-a.outputs.cache-hit != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
 
-      - uses: actions/cache@v4
-        id: cache
+      - uses: lukka/get-cmake@latest
+
+      - uses: lukka/run-vcpkg@v11.5
+
+      - name: Configure CMake
+        run: cmake --preset project-a
+
+      - name: Build
+        run: cmake --build --preset project-a
+
+      - name: Test
+        run: ctest --preset project-a
+
+      - name: Package
+        run: cpack --preset project-a -R "${{ needs.strings.outputs.build-version }}"
+
+      - uses: actions/cache/save@v4
         with:
           key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
           path: |
             ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
-
-      - uses: lukka/get-cmake@latest
-        if: steps.cache.outputs.cache-hit != 'true'
-
-      - uses: lukka/run-vcpkg@v11.5
-        if: steps.cache.outputs.cache-hit != 'true'
-
-      - name: Configure CMake
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: cmake --preset project-a
-
-      - name: Build
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: cmake --build --preset project-a
-
-      - name: Test
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: ctest --preset project-a
-
-      - name: Package
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: cpack --preset project-a -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -92,27 +101,19 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: actions/cache@v4
-        id: cache
-        with:
-          key: ${{ runner.os }}-project-b-${{ hashFiles('project-a/**', 'project-b/**') }}
-          path: |
-            ${{ needs.strings.outputs.build-dir }}/project-b/project-b-*
-
       - uses: lukka/get-cmake@latest
-        if: steps.cache.outputs.cache-hit != 'true'
 
       - uses: lukka/run-vcpkg@v11.5
         if: steps.cache.outputs.cache-hit != 'true'
 
-      - uses: actions/download-artifact@v4
-        if: steps.cache.outputs.cache-hit != 'true'
+      - uses: actions/cache/restore@v4
+        id: cache
         with:
-          pattern: project-a-*
-          path: ${{ needs.strings.outputs.build-dir }}
+          key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
+          path: |
+            ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
 
       - name: Install Dependency
-        if: steps.cache.outputs.cache-hit != 'true'
         run: >
           sh ${{ needs.strings.outputs.build-dir }}/project-a-*/project-a-*.sh
           --skip-license
@@ -120,19 +121,15 @@ jobs:
           --prefix=${{ needs.strings.outputs.install-dir }}
 
       - name: Configure CMake
-        if: steps.cache.outputs.cache-hit != 'true'
         run: cmake --preset project-b
 
       - name: Build
-        if: steps.cache.outputs.cache-hit != 'true'
         run: cmake --build --preset project-b
 
       - name: Test
-        if: steps.cache.outputs.cache-hit != 'true'
         run: ctest --preset project-b
 
       - name: Package
-        if: steps.cache.outputs.cache-hit != 'true'
         run: cpack --preset project-b -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/upload-artifact@v4
