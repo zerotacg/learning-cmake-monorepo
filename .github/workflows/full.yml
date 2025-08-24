@@ -69,6 +69,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
+          merge-multiple: true
           pattern: project-a-*
           path: ${{ needs.strings.outputs.build-dir }}
 
@@ -110,6 +111,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
+          merge-multiple: true
           pattern: project-a-*
           path: ${{ needs.strings.outputs.build-dir }}
 
