@@ -103,7 +103,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: actions/cache@v4
+      - uses: actions/cache/restore@v4
         with:
           key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**') }}
           path: |
@@ -115,8 +115,6 @@ jobs:
           key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**', 'project-b/**') }}
           path: |
             ${{ needs.strings.outputs.build-dir }}/project-b/project-b-*
-
-      - run: find ${{ github.workspace }}
 
       - uses: lukka/get-cmake@latest
         if: steps.cache.outputs.cache-hit != 'true'
