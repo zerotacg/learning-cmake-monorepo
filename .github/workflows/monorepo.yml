@@ -163,53 +163,47 @@ jobs:
 
 
   project-c:
-    needs: [ strings, project-a ]
+    needs: [ strings, cache, project-a ]
     runs-on: ubuntu-latest
+    if: needs.cache.outputs.project-c-hit != 'true'
     steps:
       - uses: actions/checkout@v5
 
-      - uses: actions/cache@v4
-        id: cache
+      - uses: actions/cache/restore@v4
         with:
-          key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**', 'project-c/**') }}
+          key: ${{ needs.cache.outputs.project-a-key }}
+          fail-on-cache-miss: true
           path: |
-            ${{ needs.strings.outputs.build-dir }}/project-c/project-c-*
+            ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
 
       - uses: lukka/get-cmake@latest
-        if: steps.cache.outputs.cache-hit != 'true'
 
       - uses: lukka/run-vcpkg@v11.5
-        if: steps.cache.outputs.cache-hit != 'true'
-
-      - uses: actions/download-artifact@v4
-        if: steps.cache.outputs.cache-hit != 'true'
-        with:
-          pattern: project-a-*
-          path: ${{ needs.strings.outputs.build-dir }}
 
       - name: Install Dependency
-        if: steps.cache.outputs.cache-hit != 'true'
         run: >
-          sh ${{ needs.strings.outputs.build-dir }}/project-a-*/project-a-*.sh
+          sh ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*.sh
           --skip-license
           --include-subdir
           --prefix=${{ needs.strings.outputs.install-dir }}
 
       - name: Configure CMake
-        if: steps.cache.outputs.cache-hit != 'true'
         run: cmake --preset project-c
 
       - name: Build
-        if: steps.cache.outputs.cache-hit != 'true'
         run: cmake --build --preset project-c/all
 
       - name: Test
-        if: steps.cache.outputs.cache-hit != 'true'
         run: ctest --preset project-c
 
       - name: Package
-        if: steps.cache.outputs.cache-hit != 'true'
         run: cpack --preset project-c -R "${{ needs.strings.outputs.build-version }}"
+
+      - uses: actions/cache/save@v4
+        with:
+          key: ${{ needs.cache.outputs.project-c-key }}
+          path: |
+            ${{ needs.strings.outputs.build-dir }}/project-c/project-c-*
 
       - uses: actions/upload-artifact@v4
         with:
