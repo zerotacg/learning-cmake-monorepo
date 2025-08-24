@@ -1,4 +1,4 @@
-name: "All: Full Build and Package"
+name: "All: Partly Cached Build and Package"
 
 on:
   push:
