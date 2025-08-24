@@ -1,4 +1,4 @@
-name: "All: Build and Package"
+name: "All: Incremental Build and Package"
 
 on:
   push:
