@@ -1,0 +1,43 @@
+name: project b
+description: project b
+inputs:
+  build-dir:
+    description: build directory
+    required: true
+  build-version:
+    description: build version
+    required: true
+  install-dir:
+    description: install directory
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: project-a-*
+        merge-multiple: true
+        path: ${{ inputs.build-dir }}
+
+    - uses: lukka/get-cmake@latest
+
+    - uses: lukka/run-vcpkg@v11.5
+
+    - name: Install Dependency
+      run: >
+        sh ${{ inputs.build-dir }}/project-a-*.sh
+        --skip-license
+        --include-subdir
+        --prefix=${{ inputs.install-dir }}
+
+    - name: Configure CMake
+      run: cmake --preset project-b
+
+    - name: Build
+      run: cmake --build --preset project-b/all
+
+    - name: Test
+      run: ctest --preset project-b
+
+    - name: Package
+      run: cpack --preset project-b -R "${{ inputs.build-version }}"
