@@ -32,9 +32,16 @@ jobs:
           echo VERSION=$VERSION
           echo "build-version=${VERSION}" >> "$GITHUB_OUTPUT"
 
-  changes:
+  cache:
     needs: [ strings ]
     runs-on: ubuntu-latest
+    outputs:
+      project-a-hit: ${{ steps.project-a.outputs.cache-hit }}
+      project-a-key: ${{ steps.project-a.outputs.cache-primary-key }}
+      project-b-hit: ${{ steps.project-b.outputs.cache-hit }}
+      project-b-key: ${{ steps.project-b.outputs.cache-primary-key }}
+      project-c-hit: ${{ steps.project-c.outputs.cache-hit }}
+      project-c-key: ${{ steps.project-c.outputs.cache-primary-key }}
     steps:
       - uses: actions/checkout@v5
 
@@ -64,7 +71,7 @@ jobs:
 
 
   project-a:
-    needs: [ strings, changes ]
+    needs: [ strings, cache ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -72,7 +79,7 @@ jobs:
       - uses: actions/cache@v4
         id: cache
         with:
-          key: ${{ needs.changes.steps.project-a.outputs.cache-primary-key }}
+          key: ${{ needs.cache.outputs.project-a-key }}
           path: |
             ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
 
@@ -106,15 +113,15 @@ jobs:
 
 
   project-b:
-    needs: [ strings, changes, project-a ]
+    needs: [ strings, cache, project-a ]
     runs-on: ubuntu-latest
-    if: needs.changes.steps.project-b.outputs.cache-hit != 'true'
+    if: needs.cache.outputs.project-b-hit != 'true'
     steps:
       - uses: actions/checkout@v5
 
       - uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.changes.steps.project-a.outputs.cache-primary-key }}
+          key: ${{ needs.cache.outputs.project-a-key }}
           fail-on-cache-miss: true
           path: |
             ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
