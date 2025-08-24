@@ -1,0 +1,152 @@
+name: "All: Full Build and Package"
+
+on:
+  push:
+    branches: [ "main", "feature/*" ]
+
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+
+jobs:
+  strings:
+    runs-on: ubuntu-latest
+    outputs:
+      build-dir: ${{ steps.strings.outputs.build-dir }}
+      build-version: ${{ steps.strings.outputs.build-version }}
+      install-dir: ${{ steps.strings.outputs.install-dir }}
+    steps:
+      - name: Set reusable strings
+        id: strings
+        shell: bash
+        run: |
+          echo "build-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+          echo "install-dir=${{ github.workspace }}/build/install" >> "$GITHUB_OUTPUT"
+          COMMIT_HASH=${{ github.sha }}
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          [ "$VERSION" == "${{ github.event.repository.default_branch }}" ] && VERSION=latest
+          VERSION="$VERSION+sha.${COMMIT_HASH:0:8}"
+          echo VERSION=$VERSION
+          echo "build-version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+  project-a:
+    needs: [ strings ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - id: cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**', 'vcpkg*.json') }}
+          path: ${{ needs.strings.outputs.build-dir }}
+
+      - uses: lukka/get-cmake@latest
+
+      - uses: lukka/run-vcpkg@v11.5
+
+      - name: Configure CMake
+        run: cmake --preset project-a
+
+      - name: Build
+        run: cmake --build --preset project-a/all
+
+      - name: Test
+        run: ctest --preset project-a
+
+      - name: Package
+        run: cpack --preset project-a -R "${{ needs.strings.outputs.build-version }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: project-a-${{ needs.strings.outputs.build-version }}
+          path: ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
+          if-no-files-found: error
+
+
+  project-b:
+    needs: [ strings, project-a ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: project-a-*
+          merge-multiple: true
+          path: ${{ needs.strings.outputs.build-dir }}
+
+      - uses: lukka/get-cmake@latest
+
+      - uses: lukka/run-vcpkg@v11.5
+
+      - name: Install Dependency
+        run: >
+          sh ${{ needs.strings.outputs.build-dir }}/project-a-*.sh
+          --skip-license
+          --include-subdir
+          --prefix=${{ needs.strings.outputs.install-dir }}
+
+      - name: Configure CMake
+        run: cmake --preset project-b
+
+      - name: Build
+        run: cmake --build --preset project-b/all
+
+      - name: Test
+        run: ctest --preset project-b
+
+      - name: Package
+        run: cpack --preset project-b -R "${{ needs.strings.outputs.build-version }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: project-b-${{ needs.strings.outputs.build-version }}
+          path: ${{ needs.strings.outputs.build-dir }}/project-b/project-b-*
+          if-no-files-found: error
+
+
+  project-c:
+    needs: [ strings, project-a ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          pattern: project-a-*
+          path: ${{ needs.strings.outputs.build-dir }}
+
+      - uses: lukka/get-cmake@latest
+
+      - uses: lukka/run-vcpkg@v11.5
+
+      - name: Install Dependency
+        run: >
+          sh ${{ needs.strings.outputs.build-dir }}/project-a-*.sh
+          --skip-license
+          --include-subdir
+          --prefix=${{ needs.strings.outputs.install-dir }}
+
+      - name: Configure CMake
+        run: cmake --preset project-c
+
+      - name: Build
+        run: cmake --build --preset project-c/all
+
+      - name: Test
+        run: ctest --preset project-c
+
+      - name: Package
+        run: cpack --preset project-c -R "${{ needs.strings.outputs.build-version }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: project-c-${{ needs.strings.outputs.build-version }}
+          path: ${{ needs.strings.outputs.build-dir }}/project-c/project-c-*
+          if-no-files-found: error
+
