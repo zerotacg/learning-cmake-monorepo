@@ -126,6 +126,8 @@ jobs:
           path: |
             ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
 
+      - run: find ${{ github.workspace }}
+
       - uses: lukka/get-cmake@latest
 
       - uses: lukka/run-vcpkg@v11.5
