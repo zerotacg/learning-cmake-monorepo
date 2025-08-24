@@ -73,33 +73,41 @@ jobs:
   project-a:
     needs: [ strings, cache ]
     runs-on: ubuntu-latest
-    if: needs.cache.outputs.project-a-hit != 'true'
     steps:
       - uses: actions/checkout@v5
+        if: needs.cache.outputs.project-a-hit != 'true'
 
       - uses: lukka/get-cmake@latest
+        if: needs.cache.outputs.project-a-hit != 'true'
 
       - uses: lukka/run-vcpkg@v11.5
+        if: needs.cache.outputs.project-a-hit != 'true'
 
       - name: Configure CMake
+        if: needs.cache.outputs.project-a-hit != 'true'
         run: cmake --preset project-a
 
       - name: Build
+        if: needs.cache.outputs.project-a-hit != 'true'
         run: cmake --build --preset project-a/all
 
       - name: Test
+        if: needs.cache.outputs.project-a-hit != 'true'
         run: ctest --preset project-a
 
       - name: Package
+        if: needs.cache.outputs.project-a-hit != 'true'
         run: cpack --preset project-a -R "${{ needs.strings.outputs.build-version }}"
 
       - uses: actions/cache/save@v4
+        if: needs.cache.outputs.project-a-hit != 'true'
         with:
           key: ${{ needs.cache.outputs.project-a-key }}
           path: |
             ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
 
       - uses: actions/upload-artifact@v4
+        if: needs.cache.outputs.project-a-hit != 'true'
         with:
           name: project-a-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
