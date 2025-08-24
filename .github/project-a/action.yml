@@ -1,0 +1,27 @@
+name: test-action
+description: test action
+inputs:
+  build-dir:
+    description: build directory
+    required: true
+  build-version:
+    description: build version
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: lukka/get-cmake@latest
+
+    - uses: lukka/run-vcpkg@v11.5
+
+    - name: Configure CMake
+      run: cmake --preset project-a
+
+    - name: Build
+      run: cmake --build --preset project-a/all
+
+    - name: Test
+      run: ctest --preset project-a
+
+    - name: Package
+      run: cpack --preset project-a -R "${{ inputs.build-version }}"

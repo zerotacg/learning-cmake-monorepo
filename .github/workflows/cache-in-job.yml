@@ -44,27 +44,11 @@ jobs:
           key: ${{ runner.os }}-project-a-${{ hashFiles('project-a/**', 'vcpkg*.json') }}
           path: ${{ needs.strings.outputs.build-dir }}
 
-      - uses: lukka/get-cmake@latest
+      - uses: ./.github/project-a
         if: steps.cache.outputs.cache-hit != 'true'
-
-      - uses: lukka/run-vcpkg@v11.5
-        if: steps.cache.outputs.cache-hit != 'true'
-
-      - name: Configure CMake
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: cmake --preset project-a
-
-      - name: Build
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: cmake --build --preset project-a/all
-
-      - name: Test
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: ctest --preset project-a
-
-      - name: Package
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: cpack --preset project-a -R "${{ needs.strings.outputs.build-version }}"
+        with:
+          build-dir: ${{ needs.strings.outputs.build-dir }}
+          build-version: ${{ needs.strings.outputs.build-version }}
 
       - uses: actions/upload-artifact@v4
         with:
