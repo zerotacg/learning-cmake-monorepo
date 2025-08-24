@@ -126,8 +126,6 @@ jobs:
           path: |
             ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
 
-      - run: find ${{ github.workspace }}
-
       - uses: lukka/get-cmake@latest
 
       - uses: lukka/run-vcpkg@v11.5
@@ -150,6 +148,12 @@ jobs:
 
       - name: Package
         run: cpack --preset project-b -R "${{ needs.strings.outputs.build-version }}"
+
+      - uses: actions/cache/save@v4
+        with:
+          key: ${{ needs.cache.outputs.project-b-key }}
+          path: |
+            ${{ needs.strings.outputs.build-dir }}/project-b/project-b-*
 
       - uses: actions/upload-artifact@v4
         with:
