@@ -111,10 +111,10 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          merge-multiple: true
           pattern: project-a-*
           path: ${{ needs.strings.outputs.build-dir }}
 
+      - run: find ${{ github.workspace }}
       - uses: lukka/get-cmake@latest
 
       - uses: lukka/run-vcpkg@v11.5
