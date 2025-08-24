@@ -57,7 +57,7 @@ jobs:
 
       - name: Build
         if: steps.cache.outputs.cache-hit != 'true'
-        run: cmake --build --preset project-a
+        run: cmake --build --preset project-a/all
 
       - name: Test
         if: steps.cache.outputs.cache-hit != 'true'
