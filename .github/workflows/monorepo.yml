@@ -113,7 +113,7 @@ jobs:
 
       - name: Build
         if: steps.cache.outputs.cache-hit != 'true'
-        run: cmake --build --preset project-b
+        run: cmake --build --preset project-b/all
 
       - name: Test
         if: steps.cache.outputs.cache-hit != 'true'
@@ -169,7 +169,7 @@ jobs:
 
       - name: Build
         if: steps.cache.outputs.cache-hit != 'true'
-        run: cmake --build --preset project-c
+        run: cmake --build --preset project-c/all
 
       - name: Test
         if: steps.cache.outputs.cache-hit != 'true'
