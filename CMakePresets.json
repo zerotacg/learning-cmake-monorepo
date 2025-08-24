@@ -2,7 +2,8 @@
   "version": 6,
   "include": [
     "cmake/CMakePresets.base.json",
-    "project-a/CMakePresets.json"
+    "project-a/CMakePresets.json",
+    "project-b/CMakePresets.json"
   ],
   "configurePresets": [
     {
@@ -10,13 +11,6 @@
       "inherits": [
         "vcpkg",
         "defaults"
-      ]
-    },
-    {
-      "name": "project-b",
-      "inherits": [
-        "vcpkg",
-        "subproject"
       ]
     },
     {
@@ -45,15 +39,6 @@
     },
     {
       "inherits": "subproject",
-      "name": "project-b/all",
-      "configurePreset": "project-b"
-    },
-    {
-      "inherits": "project-b/all",
-      "name": "project-b/install"
-    },
-    {
-      "inherits": "subproject",
       "name": "project-c/all",
       "configurePreset": "project-c"
     },
@@ -69,11 +54,6 @@
       "configurePreset": "monorepo"
     },
     {
-      "name": "project-b",
-      "inherits": "subproject",
-      "configurePreset": "project-b"
-    },
-    {
       "name": "project-c",
       "inherits": "subproject",
       "configurePreset": "project-c"
@@ -84,11 +64,6 @@
       "name": "monorepo",
       "inherits": "subproject",
       "configurePreset": "monorepo"
-    },
-    {
-      "name": "project-b",
-      "inherits": "subproject",
-      "configurePreset": "project-b"
     },
     {
       "name": "project-c",
@@ -119,31 +94,6 @@
         {
           "type": "build",
           "name": "monorepo/install"
-        }
-      ]
-    },
-    {
-      "name": "project-b",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "project-b"
-        },
-        {
-          "type": "build",
-          "name": "project-b/all"
-        },
-        {
-          "type": "test",
-          "name": "project-b"
-        },
-        {
-          "type": "package",
-          "name": "project-b"
-        },
-        {
-          "type": "build",
-          "name": "project-b/install"
         }
       ]
     },
