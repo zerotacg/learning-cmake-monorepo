@@ -79,7 +79,7 @@ jobs:
 
       - name: Install Dependency
         run: >
-          sh ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*.sh
+          sh ${{ needs.strings.outputs.build-dir }}/project-a*/project-a-*.sh
           --skip-license
           --include-subdir
           --prefix=${{ needs.strings.outputs.install-dir }}
@@ -114,14 +114,13 @@ jobs:
           pattern: project-a-*
           path: ${{ needs.strings.outputs.build-dir }}
 
-      - run: find ${{ github.workspace }}
       - uses: lukka/get-cmake@latest
 
       - uses: lukka/run-vcpkg@v11.5
 
       - name: Install Dependency
         run: >
-          sh ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*.sh
+          sh ${{ needs.strings.outputs.build-dir }}/project-a*/project-a-*.sh
           --skip-license
           --include-subdir
           --prefix=${{ needs.strings.outputs.install-dir }}
