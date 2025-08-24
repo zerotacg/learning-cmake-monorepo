@@ -15,13 +15,17 @@ runs:
     - uses: lukka/run-vcpkg@v11.5
 
     - name: Configure CMake
+      shell: bash
       run: cmake --preset project-a
 
     - name: Build
+      shell: bash
       run: cmake --build --preset project-a/all
 
     - name: Test
+      shell: bash
       run: ctest --preset project-a
 
     - name: Package
+      shell: bash
       run: cpack --preset project-a -R "${{ inputs.build-version }}"
