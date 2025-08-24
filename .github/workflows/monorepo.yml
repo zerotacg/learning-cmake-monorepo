@@ -116,6 +116,8 @@ jobs:
           path: |
             ${{ needs.strings.outputs.build-dir }}/project-b/project-b-*
 
+      - run: find ${{ github.workspace }}
+
       - uses: lukka/get-cmake@latest
         if: steps.cache.outputs.cache-hit != 'true'
 
