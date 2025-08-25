@@ -61,7 +61,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         id: artifact
         with:
-          name: project-a-${{ matix.library }}-${{ needs.strings.outputs.build-version }}
+          name: project-a-${{ matrix.library }}-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
           if-no-files-found: error
 
