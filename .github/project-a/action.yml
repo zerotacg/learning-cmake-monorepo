@@ -7,6 +7,9 @@ inputs:
   build-version:
     description: build version
     required: true
+  library-type:
+    description: library type
+    required: true
 runs:
   using: composite
   steps:
@@ -16,7 +19,7 @@ runs:
 
     - name: Configure CMake
       shell: bash
-      run: cmake --preset project-a
+      run: cmake --preset project-a -DBUILD_SHARED_LIBS=${{ inputs.library-type == 'shared' && 'ON' || 'OFF' }}
 
     - name: Build
       shell: bash

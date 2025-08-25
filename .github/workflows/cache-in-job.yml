@@ -35,6 +35,13 @@ jobs:
   project-a:
     needs: [ strings ]
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        library: [ static, shared ]
+    outputs:
+      static-artifact-id: ${{ steps.output.outputs.static-artifact-id }}
+      shared-artifact-id: ${{ steps.output.outputs.shared-artifact-id }}
     steps:
       - uses: actions/checkout@v5
 
@@ -49,13 +56,18 @@ jobs:
         with:
           build-dir: ${{ needs.strings.outputs.build-dir }}
           build-version: ${{ needs.strings.outputs.build-version }}
+          library-type: ${{ matrix.library }}
 
       - uses: actions/upload-artifact@v4
+        id: artifact
         with:
-          name: project-a-${{ needs.strings.outputs.build-version }}
+          name: project-a-${{ matix.library }}-${{ needs.strings.outputs.build-version }}
           path: ${{ needs.strings.outputs.build-dir }}/project-a/project-a-*
           if-no-files-found: error
 
+      - id: output
+        run: |
+          echo "${{ matrix.library }}-artifact-id=${{ steps.artifact.outputs.artifact-id }}" >> $GITHUB_OUTPUT
 
   project-b:
     needs: [ strings, project-a ]
@@ -75,6 +87,7 @@ jobs:
           build-dir: ${{ needs.strings.outputs.build-dir }}
           build-version: ${{ needs.strings.outputs.build-version }}
           install-dir: ${{ needs.strings.outputs.install-dir }}
+          project-a-artifact-id: ${{ needs.project-a.outputs.static-artifact-id }}
 
       - uses: actions/upload-artifact@v4
         with:
