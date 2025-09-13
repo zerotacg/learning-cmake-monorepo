@@ -8,5 +8,9 @@
         "ms-vscode.cpptools-extension-pack"
       ]
     }
-  }
+  },
+  "runArgs": [
+    "--userns=keep-id:uid=1000,gid=1000"
+  ],
+  "updateRemoteUserUID": true
 }
