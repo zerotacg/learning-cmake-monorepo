@@ -14,27 +14,32 @@
   ],
   "buildPresets": [
     {
-      "inherits": "subproject",
       "name": "project-a/all",
-      "configurePreset": "project-a"
+      "inherits": "subproject",
+      "configurePreset": "project-a",
+      "configuration": "Debug"
     },
     {
-      "inherits": "project-a/all",
-      "name": "project-a/install"
+      "name": "project-a/install",
+      "inherits": "project-a/all"
     }
   ],
   "testPresets": [
     {
       "name": "project-a",
       "inherits": "subproject",
-      "configurePreset": "project-a"
+      "configurePreset": "project-a",
+      "configuration": "Debug"
     }
   ],
   "packagePresets": [
     {
       "name": "project-a",
       "inherits": "subproject",
-      "configurePreset": "project-a"
+      "configurePreset": "project-a",
+      "configurations": [
+        "Debug"
+      ]
     }
   ],
   "workflowPresets": [
