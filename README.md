@@ -45,4 +45,4 @@ credits for inspirations and insights
 
 ## TODO
  - [ ] add transitive dependency example as vcpkg fmt is static build and not really a dependency to project-b 
- - [ ] update to cmake 4 
+ - [ ] update to cmake 4 also see https://youtu.be/K5Kg8TOTKjU

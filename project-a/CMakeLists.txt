@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 enable_testing()
 
-include(GNUInstallDirs)
+#include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(../cmake/add_project_library_alias.cmake)
 
