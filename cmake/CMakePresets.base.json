@@ -15,6 +15,7 @@
       "cacheVariables": {
         "subprojects": "${presetName}",
         "CMAKE_PREFIX_PATH": "${sourceDir}/build/install",
+        "CMAKE_CONFIGURATION_TYPES": "Debug;Release",
         "CPACK_PACKAGE_NAME": "${presetName}",
         "CPACK_INSTALL_CMAKE_PROJECTS": "${sourceDir}/build/${presetName};${presetName};${presetName};/"
       }
